@@ -6,6 +6,8 @@ const data = require("./data.js");
 
 const app = express();
 
+app.use("/build", express.static(path.join(__dirname, "..", "..", "build")));
+
 app.enable("trust proxy");
 
 function nocache(req, res, next) {
@@ -16,7 +18,7 @@ function nocache(req, res, next) {
 }
 
 app.get("/ping.png", nocache, (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "ping.png"));
+  res.sendFile(path.join(__dirname, "ping.png"));
   const url = req.get("Referrer") || req.query.fallback;
   if (url) {
     const userAgent = uaParser(req.get("User-Agent"));
@@ -115,7 +117,7 @@ app.get("/api/teapot", (req, res) => {
 });
 
 app.get("/", nocache, (req, res) => {
-  res.end('<img src="/ping.png">');
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(process.env.PORT, () => {

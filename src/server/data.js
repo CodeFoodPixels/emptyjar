@@ -1,5 +1,6 @@
 const fs = require("fs");
-const dbFile = "./.data/hits.db";
+const path = require("path");
+const dbFile = path.join(__dirname, "..", "..", ".data" ,"hits.db");
 const dbFileExists = fs.existsSync(dbFile);
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(dbFile);
