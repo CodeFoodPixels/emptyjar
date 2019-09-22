@@ -6,7 +6,7 @@ export default () => {
   return (
     <section className="charts">
       <div className="charts__row">
-        <TimeSeries title="Total hits" maxWidth={1000} />
+        <TimeSeries title="Total hits" maxWidth={990} />
       </div>
       <div className="charts__row">
         <TimeSeries title="Hits by URL" groupBy="url" />

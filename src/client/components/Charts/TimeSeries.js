@@ -13,7 +13,7 @@ import { throttle } from "../../helpers";
 
 import "../../../../node_modules/react-vis/dist/style.css";
 
-export default ({ title, groupBy, maxWidth = 500 }) => {
+export default ({ title, groupBy, maxWidth = 490 }) => {
   const state = useContext(State.State);
 
   let yMax = 0;
