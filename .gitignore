@@ -63,3 +63,4 @@ typings/
 .data/hits.db
 
 build/
+config.json

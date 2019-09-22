@@ -3,6 +3,7 @@ const path = require("path");
 const uaParser = require("ua-parser-js");
 const geoip = require("geoip-lite");
 const data = require("./data.js");
+const urlChecker = require("./urlChecker.js");
 
 const app = express();
 
@@ -19,8 +20,9 @@ function nocache(req, res, next) {
 
 app.get("/ping.png", nocache, (req, res) => {
   res.sendFile(path.join(__dirname, "ping.png"));
-  const url = req.get("Referrer") || req.query.fallback;
-  if (url) {
+  const url = req.get("Referrer") || `[FALLBACK] ${req.query.fallback}`;
+
+  if (url && urlChecker(url)) {
     const userAgent = uaParser(req.get("User-Agent"));
 
     const device_type = userAgent.device.type || "Unknown";
