@@ -23,13 +23,12 @@ body {
     padding: 10px;
 }
 
-.chart__tooltip {
-    background: #000000;
-    border-radius: 5px;
-    padding: 5px;
+.charts {
+    display: flex;
+    flex-direction: column;
 }
 
-.charts {
+.charts__row {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -37,4 +36,11 @@ body {
 
 .charts__chart {
     padding: 5px;
+}
+
+.charts__tooltip {
+    background: #000000;
+    border-radius: 5px;
+    padding: 5px;
+    min-width: 150px;
 }

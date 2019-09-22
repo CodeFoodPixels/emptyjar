@@ -9,10 +9,11 @@ import {
   Crosshair,
   LineMarkSeries
 } from "react-vis";
+import { throttle } from "../../helpers";
 
 import "../../../../node_modules/react-vis/dist/style.css";
 
-export default ({ title, groupBy }) => {
+export default ({ title, groupBy, maxWidth = 500 }) => {
   const state = useContext(State.State);
 
   let yMax = 0;
@@ -65,13 +66,15 @@ export default ({ title, groupBy }) => {
   const [crosshairData, setCrosshairData] = useState({});
 
   const [graphWidth, setGraphWidth] = useState(
-    Math.min(document.documentElement.clientWidth - 10, 500)
+    Math.min(document.documentElement.clientWidth - 10, maxWidth)
   );
 
   useEffect(() => {
-    function _onResize() {
-      setGraphWidth(Math.min(document.documentElement.clientWidth - 10, 700));
-    }
+    const _onResize = throttle(() => {
+      setGraphWidth(
+        Math.min(document.documentElement.clientWidth - 10, maxWidth)
+      );
+    }, 250);
 
     window.addEventListener("resize", _onResize);
 
@@ -102,7 +105,7 @@ export default ({ title, groupBy }) => {
     setCrosshairData({
       value,
       text: (
-        <div className="chart__tooltip">
+        <div className="charts__tooltip">
           <h3>{`${value.x.getFullYear()}-${(value.x.getMonth() + 1)
             .toString()
             .padStart(2, "0")}-${value.x.getDate()}`}</h3>
@@ -126,7 +129,7 @@ export default ({ title, groupBy }) => {
 
   return (
     <div className="charts__chart">
-      <h3>{title}</h3>
+      <h2>{title}</h2>
       <XYPlot
         xType="time-utc"
         onMouseLeave={_onMouseLeave}
