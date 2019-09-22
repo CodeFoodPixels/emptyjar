@@ -40,7 +40,7 @@ export default ({ title, groupBy }) => {
   }
 
   const data = state.data.reduce((accumulator, hit) => {
-    const grouping = groupBy ? hit[groupBy] : 0;
+    const grouping = groupBy ? hit[groupBy] : "Hits";
 
     const hitDate = new Date(hit.timestamp * 1000);
     hitDate.setUTCHours(0, 0, 0, 0);
@@ -69,20 +69,30 @@ export default ({ title, groupBy }) => {
   }
 
   function _onNearestX(value, { index }) {
-    const text = Object.keys(data).reduce((accumulator, key) => {
-      return (
-        <>
-          {accumulator}
-          <p>
-            <b>{key}:</b> {data[key][index].y}
+    const text = Object.keys(data)
+      .map(key => ({
+        key,
+        value: data[key][index].y
+      }))
+      .sort((a, b) => (a.value !== b.value ? a.value < b.value : a.key > b.key))
+      .map(({ key, value }) => {
+        return (
+          <p key={key}>
+            <b>{key}:</b> {value}
           </p>
-        </>
-      );
-    }, <h3>{`${value.x.getFullYear()}-${(value.x.getMonth() + 1).toString().padStart(2, "0")}-${value.x.getDate()}`}</h3>);
+        );
+      });
 
     setCrosshairData({
       value,
-      text: <div className="chart__tooltip">{text}</div>
+      text: (
+        <div className="chart__tooltip">
+          <h3>{`${value.x.getFullYear()}-${(value.x.getMonth() + 1)
+            .toString()
+            .padStart(2, "0")}-${value.x.getDate()}`}</h3>
+          {text}
+        </div>
+      )
     });
   }
 
@@ -107,7 +117,16 @@ export default ({ title, groupBy }) => {
         width={500}
         height={300}
         yDomain={[0, Math.ceil(yMax * 1.2)]}
-        xDomain={hitTemplate.length ? [hitTemplate[0].x, new Date(hitTemplate[hitTemplate.length - 1].x.valueOf() + 43200000)] : []}
+        xDomain={
+          hitTemplate.length
+            ? [
+                hitTemplate[0].x,
+                new Date(
+                  hitTemplate[hitTemplate.length - 1].x.valueOf() + 43200000
+                )
+              ]
+            : []
+        }
       >
         <VerticalGridLines />
         <HorizontalGridLines />
