@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import State from "../../state";
 import {
   XYPlot,
@@ -64,6 +64,22 @@ export default ({ title, groupBy }) => {
 
   const [crosshairData, setCrosshairData] = useState({});
 
+  const [graphWidth, setGraphWidth] = useState(
+    Math.min(document.documentElement.clientWidth - 10, 500)
+  );
+
+  useEffect(() => {
+    function _onResize() {
+      setGraphWidth(Math.min(document.documentElement.clientWidth - 10, 700));
+    }
+
+    window.addEventListener("resize", _onResize);
+
+    return () => {
+      window.removeEventListener("resize", _onResize);
+    };
+  });
+
   function _onMouseLeave() {
     setCrosshairData({});
   }
@@ -109,12 +125,12 @@ export default ({ title, groupBy }) => {
   }
 
   return (
-    <div>
+    <div className="charts__chart">
       <h3>{title}</h3>
       <XYPlot
         xType="time-utc"
         onMouseLeave={_onMouseLeave}
-        width={500}
+        width={graphWidth}
         height={300}
         yDomain={[0, Math.ceil(yMax * 1.2)]}
         xDomain={

@@ -28,3 +28,13 @@ body {
     border-radius: 5px;
     padding: 5px;
 }
+
+.charts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.charts__chart {
+    padding: 5px;
+}
