@@ -62,8 +62,6 @@ export default ({ title, groupBy }) => {
     return accumulator;
   }, {});
 
-  Object.values(data).forEach(data => data.sort((a, b) => a.x > b.x));
-
   const [crosshairData, setCrosshairData] = useState({});
 
   function _onMouseLeave() {
@@ -104,16 +102,17 @@ export default ({ title, groupBy }) => {
     <div>
       <h3>{title}</h3>
       <XYPlot
-        xType="time"
+        xType="time-utc"
         onMouseLeave={_onMouseLeave}
-        width={300}
+        width={500}
         height={300}
         yDomain={[0, Math.ceil(yMax * 1.2)]}
+        xDomain={hitTemplate.length ? [hitTemplate[0].x, new Date(hitTemplate[hitTemplate.length - 1].x.valueOf() + 43200000)] : []}
       >
         <VerticalGridLines />
         <HorizontalGridLines />
-        <XAxis />
-        <YAxis tick />
+        <XAxis tickTotal={hitTemplate.length} />
+        <YAxis />
         {buildLines()}
         <Crosshair values={[crosshairData.value]}>
           {crosshairData.text}
