@@ -2,7 +2,7 @@ import React from "react";
 import TimeSeries from "./Charts/TimeSeries";
 import Choropleth from "./Charts/Choropleth";
 
-export default () => {
+const Charts = () => {
   return (
     <section className="charts">
       <div className="charts__row">
@@ -25,3 +25,7 @@ export default () => {
     </section>
   );
 };
+
+Charts.displayName = "Charts";
+
+export default Charts;

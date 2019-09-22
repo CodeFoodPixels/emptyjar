@@ -1,11 +1,18 @@
 import React from "react";
-import State from "../state";
-import Container from "./Container";
+import Header from "./Header";
+import Filters from "./Filters";
+import Charts from "./Charts";
 
-export default () => {
+const App = () => {
   return (
-    <State.Provider>
-      <Container />
-    </State.Provider>
+    <>
+      <Header />
+      <Filters />
+      <Charts />
+    </>
   );
 };
+
+App.displayName = "App";
+
+export default App;

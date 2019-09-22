@@ -1,4 +1,5 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import {
   ComposableMap,
   ZoomableGroup,
@@ -6,13 +7,10 @@ import {
   Geography
 } from "react-simple-maps";
 import ReactTooltip from "react-tooltip";
-import State from "../../state";
 import { scaleLinear } from "d3-scale";
 
-export default () => {
-  const state = useContext(State.State);
-
-  const data = state.data.reduce((accumulator, hit) => {
+const Choropleth = ({ data }) => {
+  const processedData = data.reduce((accumulator, hit) => {
     if (accumulator[hit.country]) {
       accumulator[hit.country] += 1;
     } else {
@@ -22,7 +20,7 @@ export default () => {
     return accumulator;
   }, {});
 
-  const highestNumber = Object.values(data)
+  const highestNumber = Object.values(processedData)
     .sort()
     .reverse()[0];
 
@@ -37,7 +35,7 @@ export default () => {
   });
 
   function buildGeography(geography, projection, index) {
-    const hits = data[geography.properties.ISO_A2] || 0;
+    const hits = processedData[geography.properties.ISO_A2] || 0;
     const tooltip = `
             <h3>${geography.properties.NAME}</h3>
             <p><b>Hits:</b> ${hits}</p>
@@ -102,3 +100,9 @@ export default () => {
     </div>
   );
 };
+
+Choropleth.displayName = "Choropleth";
+
+export default connect(({ data }) => ({
+  data
+}))(Choropleth);

@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import State from "../../state";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import {
   XYPlot,
   XAxis,
@@ -13,12 +13,10 @@ import { throttle } from "../../helpers";
 
 import "../../../../node_modules/react-vis/dist/style.css";
 
-export default ({ title, groupBy, maxWidth = 490 }) => {
-  const state = useContext(State.State);
-
+const TimeSeries = ({ data, title, groupBy, maxWidth = 490 }) => {
   let yMax = 0;
 
-  const startDate = state.data.reduce((earliestDate, hit) => {
+  const startDate = data.reduce((earliestDate, hit) => {
     const hitDate = new Date(hit.timestamp * 1000);
     hitDate.setUTCHours(0, 0, 0, 0);
 
@@ -40,7 +38,7 @@ export default ({ title, groupBy, maxWidth = 490 }) => {
     });
   }
 
-  const data = state.data.reduce((accumulator, hit) => {
+  const processedData = data.reduce((accumulator, hit) => {
     const grouping = groupBy ? hit[groupBy] : "Hits";
 
     const hitDate = new Date(hit.timestamp * 1000);
@@ -88,10 +86,10 @@ export default ({ title, groupBy, maxWidth = 490 }) => {
   }
 
   function _onNearestX(value, { index }) {
-    const text = Object.keys(data)
+    const text = Object.keys(processedData)
       .map(key => ({
         key,
-        value: data[key][index].y
+        value: processedData[key][index].y
       }))
       .sort((a, b) => (a.value !== b.value ? a.value < b.value : a.key > b.key))
       .map(({ key, value }) => {
@@ -116,7 +114,7 @@ export default ({ title, groupBy, maxWidth = 490 }) => {
   }
 
   function buildLines() {
-    return Object.values(data).map((data, i) => {
+    return Object.values(processedData).map((data, i) => {
       return (
         <LineMarkSeries
           onNearestX={i === 0 ? _onNearestX : undefined}
@@ -159,3 +157,9 @@ export default ({ title, groupBy, maxWidth = 490 }) => {
     </div>
   );
 };
+
+TimeSeries.displayName = "TimeSeries";
+
+export default connect(({ data }) => ({
+  data
+}))(TimeSeries);
