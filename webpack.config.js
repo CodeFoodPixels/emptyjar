@@ -1,13 +1,22 @@
 const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
+
+const clientPath = path.resolve(__dirname, "src", "client");
+const buildPath = path.resolve(__dirname, "build");
 
 module.exports = {
   entry: {
-    main:path.resolve(__dirname, "src", "client", "index.js")
+    main: path.resolve(clientPath, "index.js")
   },
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "build")
+    path: buildPath
   },
+  plugins: [
+    new CopyPlugin([
+      { from: path.resolve(clientPath, "public"), to: buildPath }
+    ])
+  ],
   module: {
     rules: [
       {
@@ -21,6 +30,10 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"]
       }
     ]
   }

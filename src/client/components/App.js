@@ -1,5 +1,11 @@
-import React from 'react';
+import React from "react";
+import State from "../state";
+import Container from "./Container";
 
 export default () => {
-    return <h1>Hello world</h1>
-}
+  return (
+    <State.Provider>
+      <Container />
+    </State.Provider>
+  );
+};

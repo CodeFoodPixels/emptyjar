@@ -35,10 +35,8 @@ app.get("/ping.png", nocache, (req, res) => {
 
     data.logHit({
       url,
-      browser: userAgent.browser.name,
-      browser_version: userAgent.browser.version,
-      operating_system: userAgent.os.name,
-      operating_system_version: userAgent.os.version,
+      browser: `${userAgent.browser.name} ${userAgent.browser.version}`,
+      operating_system: `${userAgent.os.name} ${userAgent.os.version}`,
       device_type,
       country
     });
@@ -56,31 +54,8 @@ app.get("/api/hits", nocache, (req, res) => {
     params.operating_system = req.query.operating_system;
   }
 
-  if (req.query.operating_system_version) {
-    if (!req.query.operating_system) {
-      res.status(500);
-      return res.json({
-        message:
-          "operating_system must be defined when searching for operating_system_version"
-      });
-    }
-
-    params.operating_system_version = req.query.operating_system_version;
-  }
-
   if (req.query.browser) {
     params.browser = req.query.browser;
-  }
-
-  if (req.query.browser_version) {
-    if (!req.query.browser) {
-      res.status(500);
-      return res.json({
-        message: "browser must be defined when searching for browser_version"
-      });
-    }
-
-    params.browser_version = req.query.browser_version;
   }
 
   if (req.query.device_type) {
@@ -118,6 +93,10 @@ app.get("/api/teapot", (req, res) => {
 
 app.get("/", nocache, (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.get("/ping", nocache, (req, res) => {
+  res.end('<img src="/ping.png">');
 });
 
 app.listen(process.env.PORT, () => {

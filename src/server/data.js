@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const dbFile = path.join(__dirname, "..", "..", ".data" ,"hits.db");
+const dbFile = path.join(__dirname, "..", "..", ".data", "hits.db");
 const dbFileExists = fs.existsSync(dbFile);
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(dbFile);
@@ -8,7 +8,7 @@ const db = new sqlite3.Database(dbFile);
 db.serialize(() => {
   if (!dbFileExists) {
     db.run(
-      "CREATE TABLE hits (url TEXT, browser TEXT, browser_version REAL, operating_system TEXT, operating_system_version REAL, device_type TEXT, country TEXT, timestamp INT)"
+      "CREATE TABLE hits (url TEXT, browser TEXT, operating_system TEXT, device_type TEXT, country TEXT, timestamp INT)"
     );
   }
 });
@@ -18,9 +18,7 @@ module.exports = {
     const hitData = [
       data.url,
       data.browser,
-      data.browser_version,
       data.operating_system,
-      data.operating_system_version,
       data.device_type,
       data.country,
       Math.floor(Date.now() / 1000)
@@ -28,7 +26,7 @@ module.exports = {
 
     db.serialize(() => {
       db.run(
-        "INSERT INTO hits (url, browser, browser_version, operating_system, operating_system_version, device_type, country, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO hits (url, browser, operating_system, device_type, country, timestamp) VALUES (?, ?, ?, ?, ?, ?)",
         hitData
       );
     });
@@ -48,19 +46,9 @@ module.exports = {
       queryValues.push(params.operating_system);
     }
 
-    if (params.operating_system_version) {
-      queryParts.push("operating_system_version=?");
-      queryValues.push(params.operating_system_version);
-    }
-
     if (params.browser) {
       queryParts.push("browser LIKE ?");
       queryValues.push(params.browser);
-    }
-
-    if (params.browser_version) {
-      queryParts.push("browser_version=?");
-      queryValues.push(params.browser_version);
     }
 
     if (params.device_type) {
