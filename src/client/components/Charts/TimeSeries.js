@@ -91,6 +91,7 @@ const TimeSeries = ({ data, title, groupBy, maxWidth = 490 }) => {
         key,
         value: processedData[key][index].y
       }))
+      .filter(({ value }) => value > 0)
       .sort((a, b) => (a.value !== b.value ? a.value < b.value : a.key > b.key))
       .map(({ key, value }) => {
         return (
