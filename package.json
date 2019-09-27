@@ -4,7 +4,7 @@
   "description": "A self-hosted analytics system that doesn't use cookies",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server/index.js",
+    "start": "npm run prettier && webpack && node src/server/index.js",
     "build": "webpack",
     "build:dev": "webpack --mode=development",
     "build:watch": "webpack --mode=development --watch",
