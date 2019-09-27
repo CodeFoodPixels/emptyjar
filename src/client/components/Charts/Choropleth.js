@@ -96,7 +96,7 @@ const Choropleth = ({ data }) => {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      <ReactTooltip html={true} />
+      <ReactTooltip html clickable />
     </div>
   );
 };
