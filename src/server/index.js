@@ -1,5 +1,7 @@
 const express = require("express");
 const path = require("path");
+const url = require("url");
+const crypto = require("crypto");
 const uaParser = require("ua-parser-js");
 const geoip = require("geoip-lite");
 const data = require("./data.js");
@@ -18,12 +20,14 @@ function nocache(req, res, next) {
   next();
 }
 
-app.get("/ping.png", nocache, (req, res) => {
+app.get("/ping.png", nocache, async (req, res) => {
   res.sendFile(path.join(__dirname, "ping.png"));
-  const url = req.get("Referrer") || `[FALLBACK] ${req.query.fallback}`;
 
-  if (url && urlChecker(url)) {
-    const userAgent = uaParser(req.get("User-Agent"));
+  const requestURL = req.get("Referrer") || `[FALLBACK] ${req.query.fallback}`;
+
+  if (requestURL && urlChecker(requestURL)) {
+    const userAgentString = req.get("User-Agent");
+    const userAgent = uaParser(userAgentString);
 
     const device_type = userAgent.device.type || "Unknown";
 
@@ -35,12 +39,45 @@ app.get("/ping.png", nocache, (req, res) => {
       country = geo.country;
     }
 
+    const parsedURL = url.parse(requestURL);
+    const today = new Date();
+    const year = today.getUTCFullYear();
+    const month = (today.getUTCMonth() + 1).toString().padStart(2, "0");
+    const day = today
+      .getUTCDate()
+      .toString()
+      .padStart(2, "0");
+    const pageHitData = `${year}${month}${day}${parsedURL.host}/${parsedURL.pathname}${req.ip}${userAgentString}`;
+    const siteHitData = `${year}${month}${day}${parsedURL.host}${req.ip}${userAgentString}`;
+    const pageHitSignature = crypto
+      .createHash("sha256")
+      .update(pageHitData)
+      .digest("hex");
+    const siteHitSignature = crypto
+      .createHash("sha256")
+      .update(siteHitData)
+      .digest("hex");
+
+    const pageHitUnique = await data.pageHitUnique(pageHitSignature);
+
+    if (pageHitUnique) {
+      data.logPageHitSignature(pageHitSignature);
+    }
+
+    const siteHitUnique = await data.siteHitUnique(siteHitSignature);
+
+    if (siteHitUnique) {
+      data.logSiteHitSignature(siteHitSignature);
+    }
+
     data.logHit({
-      url,
+      url: requestURL,
       browser: `${userAgent.browser.name} ${userAgent.browser.version}`,
       operating_system: `${userAgent.os.name} ${userAgent.os.version}`,
       device_type,
-      country
+      country,
+      pageHitUnique,
+      siteHitUnique
     });
   }
 });

@@ -8,8 +8,10 @@ const db = new sqlite3.Database(dbFile);
 db.serialize(() => {
   if (!dbFileExists) {
     db.run(
-      "CREATE TABLE hits (url TEXT, browser TEXT, operating_system TEXT, device_type TEXT, country TEXT, timestamp INT)"
+      "CREATE TABLE hits (url TEXT, browser TEXT, operating_system TEXT, device_type TEXT, country TEXT, page_hit_unique INT, site_hit_unique INT, timestamp INT)"
     );
+    db.run("CREATE TABLE page_hit_signatures (signature TEXT PRIMARY KEY)");
+    db.run("CREATE TABLE site_hit_signatures (signature TEXT PRIMARY KEY)");
   }
 });
 
@@ -21,13 +23,63 @@ module.exports = {
       data.operating_system,
       data.device_type,
       data.country,
+      data.pageHitUnique ? 1 : 0,
+      data.siteHitUnique ? 1 : 0,
       Math.floor(Date.now() / 1000)
     ];
 
     db.serialize(() => {
       db.run(
-        "INSERT INTO hits (url, browser, operating_system, device_type, country, timestamp) VALUES (?, ?, ?, ?, ?, ?)",
+        "INSERT INTO hits (url, browser, operating_system, device_type, country, page_hit_unique, site_hit_unique, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         hitData
+      );
+    });
+  },
+
+  logPageHitSignature(signature) {
+    db.serialize(() => {
+      db.run(
+        "INSERT INTO page_hit_signatures (signature) VALUES (?)",
+        signature
+      );
+    });
+  },
+
+  logSiteHitSignature(signature) {
+    db.serialize(() => {
+      db.run(
+        "INSERT INTO site_hit_signatures (signature) VALUES (?)",
+        signature
+      );
+    });
+  },
+
+  pageHitUnique(signature) {
+    return new Promise((resolve, reject) => {
+      db.all(
+        "SELECT * from page_hit_signatures WHERE signature = ?",
+        [signature],
+        function(err, rows) {
+          if (err) {
+            return reject(err);
+          }
+          resolve(rows.length > 0 ? false : true);
+        }
+      );
+    });
+  },
+
+  siteHitUnique(signature) {
+    return new Promise((resolve, reject) => {
+      db.all(
+        "SELECT * from site_hit_signatures WHERE signature = ?",
+        [signature],
+        function(err, rows) {
+          if (err) {
+            return reject(err);
+          }
+          resolve(rows.length > 0 ? false : true);
+        }
       );
     });
   },
