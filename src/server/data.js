@@ -113,6 +113,16 @@ module.exports = {
       queryValues.push(params.country);
     }
 
+    if (typeof params.page_hit_unique !== "undefined") {
+      queryParts.push("page_hit_unique = ?");
+      queryValues.push(params.page_hit_unique ? 1 : 0);
+    }
+
+    if (typeof params.site_hit_unique !== "undefined") {
+      queryParts.push("site_hit_unique = ?");
+      queryValues.push(params.site_hit_unique ? 1 : 0);
+    }
+
     if (params.time_from) {
       queryParts.push("timestamp >= ?");
       queryValues.push(params.time_from);
@@ -134,7 +144,15 @@ module.exports = {
         if (err) {
           return reject(err);
         }
-        resolve(rows);
+
+        const result = rows.map(hit => {
+          hit.page_hit_unique = hit.page_hit_unique === 1 ? true : false;
+          hit.site_hit_unique = hit.site_hit_unique === 1 ? true : false;
+
+          return hit;
+        });
+
+        resolve(result);
       });
     });
   }

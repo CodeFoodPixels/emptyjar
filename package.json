@@ -9,7 +9,8 @@
     "build:dev": "webpack --mode=development",
     "build:watch": "webpack --mode=development --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prettier": "prettier --write \"**/*.js\""
+    "prettier": "prettier --write \"**/*.js\"",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",

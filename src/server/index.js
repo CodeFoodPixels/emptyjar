@@ -7,6 +7,8 @@ const geoip = require("geoip-lite");
 const data = require("./data.js");
 const urlChecker = require("./urlChecker.js");
 
+const port = process.env.PORT || 8080;
+
 const app = express();
 
 app.use("/build", express.static(path.join(__dirname, "..", "..", "build")));
@@ -23,7 +25,10 @@ function nocache(req, res, next) {
 app.get("/ping.png", nocache, async (req, res) => {
   res.sendFile(path.join(__dirname, "ping.png"));
 
-  const requestURL = req.get("Referrer") || `[FALLBACK] ${req.query.fallback}`;
+  const requestURL =
+    req.get("Referrer") || req.query.fallback
+      ? `[FALLBACK] ${req.query.fallback}`
+      : undefined;
 
   if (requestURL && urlChecker(requestURL)) {
     const userAgentString = req.get("User-Agent");
@@ -70,10 +75,17 @@ app.get("/ping.png", nocache, async (req, res) => {
       data.logSiteHitSignature(siteHitSignature);
     }
 
+    const browser =
+      `${userAgent.browser.name || ""} ${userAgent.browser.version ||
+        ""}`.trim() || "Unknown";
+    const operating_system =
+      `${userAgent.os.name || ""} ${userAgent.os.version || ""}`.trim() ||
+      "Unknown";
+
     data.logHit({
       url: requestURL,
-      browser: `${userAgent.browser.name} ${userAgent.browser.version}`,
-      operating_system: `${userAgent.os.name} ${userAgent.os.version}`,
+      browser,
+      operating_system,
       device_type,
       country,
       pageHitUnique,
@@ -103,6 +115,14 @@ app.get("/api/hits", nocache, (req, res) => {
 
   if (req.query.country) {
     params.country = req.query.country;
+  }
+
+  if (req.query.page_hit_unique) {
+    params.page_hit_unique = req.query.page_hit_unique === "true" ? true : false;
+  }
+
+  if (req.query.site_hit_unique) {
+    params.site_hit_unique = req.query.site_hit_unique === "true" ? true : false;
   }
 
   if (req.query.time_from) {
@@ -138,6 +158,6 @@ app.get("/ping", nocache, (req, res) => {
   res.end('<img src="/ping.png">');
 });
 
-app.listen(process.env.PORT, () => {
-  console.log("Your app is listening on port " + process.env.PORT);
+app.listen(port, () => {
+  console.log("Your app is listening on port " + port);
 });
