@@ -25,10 +25,12 @@ function nocache(req, res, next) {
 app.get("/ping.png", nocache, async (req, res) => {
   res.sendFile(path.join(__dirname, "ping.png"));
 
-  const requestURL =
-    req.get("Referrer") || req.query.fallback
-      ? `[FALLBACK] ${req.query.fallback}`
-      : undefined;
+  const referrer = req.get("Referrer");
+  const requestURL = referrer
+    ? referrer
+    : req.query.fallback
+    ? `[FALLBACK] ${req.query.fallback}`
+    : undefined;
 
   if (requestURL && urlChecker(requestURL)) {
     const userAgentString = req.get("User-Agent");
