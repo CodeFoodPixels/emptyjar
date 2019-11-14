@@ -11,7 +11,8 @@ const port = process.env.PORT || 8080;
 
 const app = express();
 
-app.use("/build", express.static(path.join(__dirname, "..", "..", "build")));
+app.use("/build", express.static(path.join(__dirname, "build")));
+app.use("/", express.static(path.join(__dirname, "public")));
 
 app.enable("trust proxy");
 
@@ -120,11 +121,13 @@ app.get("/api/hits", nocache, (req, res) => {
   }
 
   if (req.query.page_hit_unique) {
-    params.page_hit_unique = req.query.page_hit_unique === "true" ? true : false;
+    params.page_hit_unique =
+      req.query.page_hit_unique === "true" ? true : false;
   }
 
   if (req.query.site_hit_unique) {
-    params.site_hit_unique = req.query.site_hit_unique === "true" ? true : false;
+    params.site_hit_unique =
+      req.query.site_hit_unique === "true" ? true : false;
   }
 
   if (req.query.time_from) {

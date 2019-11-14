@@ -11,7 +11,7 @@ import {
 } from "react-vis";
 import { throttle } from "../../helpers";
 
-import "../../../../node_modules/react-vis/dist/style.css";
+import "../../node_modules/react-vis/dist/style.css";
 
 const TimeSeries = ({ data, title, groupBy, maxWidth = 490 }) => {
   let yMax = 0;

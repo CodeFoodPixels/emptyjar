@@ -1,8 +1,7 @@
 const path = require("path");
-const CopyPlugin = require("copy-webpack-plugin");
 
-const clientPath = path.resolve(__dirname, "src", "client");
-const buildPath = path.resolve(__dirname, "build");
+const clientPath = path.resolve(__dirname);
+const buildPath = path.resolve(__dirname, "..", "build");
 
 module.exports = {
   entry: {
@@ -12,15 +11,11 @@ module.exports = {
     filename: "bundle.js",
     path: buildPath
   },
-  plugins: [
-    new CopyPlugin([
-      { from: path.resolve(clientPath, "public"), to: buildPath }
-    ])
-  ],
   module: {
     rules: [
       {
         test: /\.js?$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: "babel-loader",
