@@ -84,10 +84,7 @@ const Choropleth = ({ data }) => {
         style={{ width: "100%", height: "auto" }}
       >
         <ZoomableGroup center={[0, 20]} disablePanning>
-          <Geographies
-            geography="/build/world-50m.json"
-            disableOptimization={true}
-          >
+          <Geographies geography="/world-50m.json" disableOptimization={true}>
             {(geographies, projection) =>
               geographies.map((geography, index) =>
                 buildGeography(geography, projection, index)

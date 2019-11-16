@@ -1,6 +1,7 @@
-const express = require("express");
+const http = require("http");
 const path = require("path");
 const url = require("url");
+const fs = require("fs");
 const crypto = require("crypto");
 const uaParser = require("ua-parser-js");
 const geoip = require("geoip-lite");
@@ -9,24 +10,53 @@ const urlChecker = require("./urlChecker.js");
 
 const port = process.env.PORT || 8080;
 
-const app = express();
+const server = http.createServer();
 
-app.use("/build", express.static(path.join(__dirname, "build")));
-app.use("/", express.static(path.join(__dirname, "public")));
+server.on("request", (req, res) => {
+  if (req.method === "GET") {
+    const reqUrl = url.parse(req.url, true);
 
-app.enable("trust proxy");
+    req.query = reqUrl.query;
 
-function nocache(req, res, next) {
-  res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
-  res.header("Expires", "-1");
-  res.header("Pragma", "no-cache");
-  next();
-}
+    res.setHeader(
+      "Cache-Control",
+      "private, no-cache, no-store, must-revalidate"
+    );
+    res.setHeader("Expires", "-1");
+    res.setHeader("Pragma", "no-cache");
 
-app.get("/ping.png", nocache, async (req, res) => {
-  res.sendFile(path.join(__dirname, "ping.png"));
+    const pathName =
+      reqUrl.pathname.length > 1
+        ? reqUrl.pathname.replace(/\/$/, "")
+        : reqUrl.pathname;
 
-  const referrer = req.get("Referrer");
+    switch (pathName) {
+      case "/ping.png":
+        ping(req, res);
+        break;
+      case "/ping":
+        res.end('<img src="/ping.png">');
+        break;
+      case "/api/hits":
+        hits(req, res);
+        break;
+      case "/api/teapot":
+        teapot(req, res);
+        break;
+      case "/":
+        sendFile(res, "index.html");
+        break;
+      default:
+        staticFile(pathName, req, res);
+        break;
+    }
+  }
+});
+
+async function ping(req, res) {
+  sendFile(res, path.join("public", "img", "ping.png"));
+
+  const referrer = req.headers["referrer"] || req.headers["referer"];
   const requestURL = referrer
     ? referrer
     : req.query.fallback
@@ -34,7 +64,7 @@ app.get("/ping.png", nocache, async (req, res) => {
     : undefined;
 
   if (requestURL && urlChecker(requestURL)) {
-    const userAgentString = req.get("User-Agent");
+    const userAgentString = req.headers["user-agent"];
     const userAgent = uaParser(userAgentString);
 
     const device_type = userAgent.device.type || "Unknown";
@@ -95,9 +125,9 @@ app.get("/ping.png", nocache, async (req, res) => {
       siteHitUnique
     });
   }
-});
+}
 
-app.get("/api/hits", nocache, (req, res) => {
+function hits(req, res) {
   const params = {};
 
   if (req.query.url) {
@@ -143,26 +173,73 @@ app.get("/api/hits", nocache, (req, res) => {
   }
 
   data.getHits(params).then(data => {
+    let status = 200;
     if (data.length === 0) {
-      res.status(404);
+      status = 404;
     }
-    res.json(data);
+
+    res.statusCode = status;
+    sendJSON(res, data);
   });
-});
+}
 
-app.get("/api/teapot", (req, res) => {
-  res.status(418);
-  res.json({ message: "I'm a little teapot..." });
-});
+function teapot(req, res) {
+  res.statusCode = 418;
+  sendJSON(res, { message: "I'm a little teapot..." });
+}
 
-app.get("/", nocache, (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
+function staticFile(pathName, req, res) {
+  const dir = pathName.match(/^\/build/) ? "build" : "public";
 
-app.get("/ping", nocache, (req, res) => {
-  res.end('<img src="/ping.png">');
-});
+  pathName = path.join(dir, pathName.replace(/^\/build/, ""));
 
-app.listen(port, () => {
+  sendFile(res, pathName);
+}
+
+function sendFile(res, filePath) {
+  const realPath = path.join(__dirname, filePath);
+  const extname = path.extname(realPath);
+
+  let contentType = "text/html";
+
+  switch (extname) {
+    case ".js":
+      contentType = "text/javascript";
+      break;
+    case ".css":
+      contentType = "text/css";
+      break;
+    case ".png":
+      contentType = "image/png";
+      break;
+  }
+
+  fs.readFile(realPath, (error, content) => {
+    if (error) {
+      if (error.code === "ENOENT") {
+        res.writeHead(404, { "Content-Type": "text/html" });
+        return res.end(`Cannot GET ${filePath}`, "utf-8");
+      }
+
+      res.writeHead(500, { "Content-Type": "text/html" });
+      console.log(error);
+      return res.end("Server error", "utf-8");
+    }
+
+    res.writeHead(200, { "Content-Type": contentType });
+    res.end(content, "utf-8");
+  });
+}
+
+function sendJSON(res, data) {
+  res.setHeader("Content-Type", "application/json");
+  if (typeof data === "object") {
+    res.end(JSON.stringify(data));
+  } else {
+    res.end(data);
+  }
+}
+
+server.listen(port, () => {
   console.log("Your app is listening on port " + port);
 });
