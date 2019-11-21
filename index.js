@@ -70,12 +70,12 @@ async function ping(req, res) {
     const device_type = userAgent.device.type || "Unknown";
     
     const ip =
-      (req.headers["x-forwarded-for"] || "").split(",").pop() ||
+      (req.headers["x-forwarded-for"] || "").split(",").shift() ||
       req.connection.remoteAddress ||
       req.socket.remoteAddress ||
       req.connection.socket.remoteAddress;
-    
-    const geo = geoip.lookup(req.ip);
+
+    const geo = geoip.lookup(ip);
 
     let country = "Unknown";
 
