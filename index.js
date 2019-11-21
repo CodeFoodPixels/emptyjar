@@ -68,7 +68,13 @@ async function ping(req, res) {
     const userAgent = uaParser(userAgentString);
 
     const device_type = userAgent.device.type || "Unknown";
-
+    
+    const ip =
+      (req.headers["x-forwarded-for"] || "").split(",").pop() ||
+      req.connection.remoteAddress ||
+      req.socket.remoteAddress ||
+      req.connection.socket.remoteAddress;
+    
     const geo = geoip.lookup(req.ip);
 
     let country = "Unknown";
