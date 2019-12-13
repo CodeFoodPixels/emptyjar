@@ -4,7 +4,7 @@ const url = require("url");
 const fs = require("fs");
 const crypto = require("crypto");
 const uaParser = require("ua-parser-js");
-const geoip = require("geoip-lite");
+const geoip = require("geoip-country");
 const data = require("./data.js");
 const urlChecker = require("./urlChecker.js");
 
@@ -68,7 +68,7 @@ async function ping(req, res) {
     const userAgent = uaParser(userAgentString);
 
     const device_type = userAgent.device.type || "Unknown";
-    
+
     const ip =
       (req.headers["x-forwarded-for"] || "").split(",").shift() ||
       req.connection.remoteAddress ||
@@ -102,15 +102,15 @@ async function ping(req, res) {
       .update(siteHitData)
       .digest("hex");
 
-    const pageHitUnique = await data.pageHitUnique(pageHitSignature);
+    const page_hit_unique = await data.pageHitUnique(pageHitSignature);
 
-    if (pageHitUnique) {
+    if (page_hit_unique) {
       data.logPageHitSignature(pageHitSignature);
     }
 
-    const siteHitUnique = await data.siteHitUnique(siteHitSignature);
+    const site_hit_unique = await data.siteHitUnique(siteHitSignature);
 
-    if (siteHitUnique) {
+    if (site_hit_unique) {
       data.logSiteHitSignature(siteHitSignature);
     }
 
@@ -127,13 +127,15 @@ async function ping(req, res) {
       operating_system,
       device_type,
       country,
-      pageHitUnique,
-      siteHitUnique
+      page_hit_unique,
+      site_hit_unique
     });
   }
 }
 
 function hits(req, res) {
+  res.statusCode = 200;
+
   const params = {};
 
   if (req.query.url) {
@@ -166,12 +168,12 @@ function hits(req, res) {
       req.query.site_hit_unique === "true" ? true : false;
   }
 
-  if (req.query.time_from) {
-    params.time_from = req.query.time_from;
+  if (req.query.from) {
+    params.from = req.query.from;
   }
 
-  if (req.query.time_to) {
-    params.time_to = req.query.time_to;
+  if (req.query.to) {
+    params.to = req.query.to;
   }
 
   if (req.query.country) {

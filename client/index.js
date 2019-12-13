@@ -2,18 +2,8 @@ import React from "react";
 import { render } from "react-dom";
 import App from "./components/App.js";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-
-const reducer = (state = {}, action) => {
-  switch (action.type) {
-    case "UPDATE_DATA":
-      return {
-        ...state,
-        data: [...action.data]
-      };
-  }
-  return state;
-};
+import { createStore, applyMiddleware, compose } from "redux";
+import reducers from "./reducers";
 
 const fetchMiddleware = () => dispatch => async action => {
   if (action.type === "FETCH_DATA") {
@@ -36,12 +26,21 @@ const fetchMiddleware = () => dispatch => async action => {
   dispatch(action);
 };
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const fromDate = new Date(Date.now() - 86400000 * 6);
+fromDate.setUTCHours(0, 0, 0, 0);
+const toDate = new Date();
+toDate.setUTCHours(23, 59, 59, 999);
 const store = createStore(
-  reducer,
+  reducers,
   {
+    queryDates: {
+      from: fromDate,
+      to: toDate
+    },
     data: []
   },
-  applyMiddleware(fetchMiddleware)
+  composeEnhancers(applyMiddleware(fetchMiddleware))
 );
 
 render(

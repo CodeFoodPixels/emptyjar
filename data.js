@@ -23,8 +23,8 @@ module.exports = {
       data.operating_system,
       data.device_type,
       data.country,
-      data.pageHitUnique ? 1 : 0,
-      data.siteHitUnique ? 1 : 0,
+      data.page_hit_unique ? 1 : 0,
+      data.site_hit_unique ? 1 : 0,
       Math.floor(Date.now() / 1000)
     ];
 
@@ -123,14 +123,16 @@ module.exports = {
       queryValues.push(params.site_hit_unique ? 1 : 0);
     }
 
-    if (params.time_from) {
+    if (params.from) {
+      const fromDate = new Date(params.from);
       queryParts.push("timestamp >= ?");
-      queryValues.push(params.time_from);
+      queryValues.push(Math.floor(fromDate.getTime() / 1000));
     }
 
-    if (params.time_to) {
+    if (params.to) {
+      const toDate = new Date(params.to);
       queryParts.push("timestamp <= ?");
-      queryValues.push(params.time_to);
+      queryValues.push(Math.floor(toDate.getTime() / 1000));
     }
 
     let query = "SELECT * from hits";
@@ -148,6 +150,7 @@ module.exports = {
         const result = rows.map(hit => {
           hit.page_hit_unique = hit.page_hit_unique === 1 ? true : false;
           hit.site_hit_unique = hit.site_hit_unique === 1 ? true : false;
+          hit.timestamp = new Date(hit.timestamp * 1000).toISOString();
 
           return hit;
         });

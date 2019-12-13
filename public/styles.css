@@ -1,10 +1,19 @@
+:root {
+    --primary-color: hsl(9, 100%, 64%);
+    --primary-color--hover: hsl(9, 100%, 74%);
+    --secondary-color: hsl(197, 78%, 64%);
+    --background-light: hsl(18, 22%, 91%);
+    --background-dark: hsl(72, 10%, 20%);
+}
+
 html {
     height:100%;
     font-size:10px;
 }
 
 body, html {
-    min-height: 100%
+    min-height: 100%;
+    background: var(--background-dark);
 }
 
 body {
@@ -21,25 +30,49 @@ body {
 
 .header {
     display: flex;
-    padding: 10px;
     align-items: center;
     width: 100%;
     max-width: 1000px;
+    color: #ffffff;
+    margin: 5px;
 }
 
 .header__logo {
     padding: 10px;
 }
 
-.filters {
-    width: 100%;
-    max-width: 1000px;
+.rangepicker {
+    flex: 1;
+    background: var(--background-light);
+    padding: 10px;
+    margin: 5px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: center;
+    min-width: 310px;
 }
 
-.charts {
+.infobar {
+    flex: 1;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-wrap: wrap;
+    background: var(--background-light);
+    padding: 10px;
+    margin: 5px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    justify-content: space-around;
+    text-align: center;
+    min-width: 310px;
+}
+
+.infobar__stat {
+    margin: 10px;
+    min-width: 140px;
+}
+
+.infobar__stat-value {
+    font-size: 3em;
 }
 
 .charts__row {
@@ -47,10 +80,20 @@ body {
     flex-wrap: wrap;
     justify-content: space-around;
     max-width: 1000px;
+    width: 100%;
 }
 
 .charts__chart {
-    padding: 5px;
+    padding: 10px;
+    flex: 1;
+    background: var(--background-light);
+    margin: 5px;
+    border-radius: 4px;
+    min-width: 310px;
+}
+
+.charts__title {
+    margin-top: 0px;
 }
 
 .charts__tooltip {
@@ -58,4 +101,55 @@ body {
     border-radius: 5px;
     padding: 5px;
     min-width: 150px;
+    font-size: 12px;
 }
+
+.charts__table {
+    border-spacing: 0px;
+}
+
+.charts__table-header--key {
+    width: 100%;
+    text-align: left;
+}
+
+.charts__table-row {
+    background: linear-gradient(to right, var(--primary-color), var(--primary-color) var(--charts__table-row-bar-width), var(--background-light) var(--charts__table-row-bar-width));
+}
+
+.charts__table-row:hover {
+    background: linear-gradient(to right, var(--primary-color--hover), var(--primary-color--hover) var(--charts__table-row-bar-width), var(--background-light) var(--charts__table-row-bar-width));
+}
+
+.charts__table-header {
+    padding: 5px;
+}
+
+.charts__table-cell {
+    padding: 5px;
+    border-bottom: 5px solid var(--background-light);
+}
+
+.topbar {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: space-around;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.Selectable .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+    background-color: var(--primary-color) !important;
+    color: #000000;
+  }
+  .Selectable .DayPicker-Day {
+    border-radius: 0 !important;
+  }
+  .Selectable .DayPicker-Day--start {
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+  }
+  .Selectable .DayPicker-Day--end {
+    border-top-right-radius: 50% !important;
+    border-bottom-right-radius: 50% !important;
+  }
