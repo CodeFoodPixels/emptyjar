@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/CodeFoodPixels/EmptyJar#readme",
   "dependencies": {
+    "bowser": "^2.7.0",
     "geoip-country": "^3.3.2",
-    "sqlite3": "^4.1.0",
-    "ua-parser-js": "^0.7.20"
+    "sqlite3": "^4.1.0"
   },
   "devDependencies": {
     "prettier": "^1.18.2"

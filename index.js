@@ -3,7 +3,7 @@ const path = require("path");
 const url = require("url");
 const fs = require("fs");
 const crypto = require("crypto");
-const uaParser = require("ua-parser-js");
+const bowser = require("bowser");
 const geoip = require("geoip-country");
 const data = require("./data.js");
 const urlChecker = require("./urlChecker.js");
@@ -65,9 +65,9 @@ async function ping(req, res) {
 
   if (requestURL && urlChecker(requestURL)) {
     const userAgentString = req.headers["user-agent"];
-    const userAgent = uaParser(userAgentString);
+    const userAgent = bowser.parse(userAgentString);
 
-    const device_type = userAgent.device.type || "Unknown";
+    const device_type = userAgent.platform.type || "Unknown";
 
     const ip =
       (req.headers["x-forwarded-for"] || "").split(",").shift() ||
@@ -117,8 +117,10 @@ async function ping(req, res) {
     const browser =
       `${userAgent.browser.name || ""} ${userAgent.browser.version ||
         ""}`.trim() || "Unknown";
+
+    const operating_system_version = userAgent.os.name.toLowerCase() === "windows" ? userAgent.os.versionName : userAgent.os.version;
     const operating_system =
-      `${userAgent.os.name || ""} ${userAgent.os.version || ""}`.trim() ||
+      `${userAgent.os.name || ""} ${operating_system_version || ""}`.trim() ||
       "Unknown";
 
     data.logHit({
