@@ -92,12 +92,20 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
 
   function calculateXInterval(length) {
     const results = [];
-    length = length - 1;
-    for (let i = 5; i < 11; i++) {
-      const interval = Math.round(length / i);
-      const remainder = length % interval;
 
-      if (remainder > 0) {
+    if (graphWidth >= (length * 75)) {
+      return 1;
+    }
+
+    const calcLength = length - 1;
+
+    for (let i = 1; i < 11; i++) {
+      const interval = Math.round(calcLength / i);
+      const remainder = calcLength % interval;
+
+      const labelsWidth = Math.floor(length/interval) * 75;
+
+      if (graphWidth >= labelsWidth && (length < 10 || remainder > 0)) {
         results.push(interval);
       }
     }
@@ -115,7 +123,7 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
     const tickInterval = calculateXInterval(xValues.length);
 
     return xValues.reduce((tickValues, xValue, i) => {
-      if (xValues.length <= 10 || i % tickInterval === 0) {
+      if (i % tickInterval === 0) {
         tickValues.push(xValue);
       }
 
