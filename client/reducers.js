@@ -1,4 +1,5 @@
 import { overwrite, getName } from "country-list";
+import { dateYMD } from "./helpers";
 
 overwrite([
   {
@@ -12,20 +13,8 @@ overwrite([
 ]);
 
 export default (state, action) => {
-  function dateYMD(date) {
-    return `${date.getUTCFullYear()}-${(date.getUTCMonth() + 1)
-      .toString()
-      .padStart(2, "0")}-${date
-      .getUTCDate()
-      .toString()
-      .padStart(2, "0")}`;
-  }
-
   switch (action.type) {
     case "UPDATE_QUERYDATES":
-      action.queryDates.from.setUTCHours(0, 0, 0, 0);
-      action.queryDates.to.setUTCHours(23, 59, 59, 999);
-
       return {
         ...state,
         queryDates: action.queryDates

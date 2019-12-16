@@ -50,6 +50,17 @@ body {
     box-sizing: border-box;
     text-align: center;
     min-width: 310px;
+    display: flex;
+    flex-direction: column;
+}
+
+.rangepicker__picker {
+    display: flex;
+}
+
+.rangepicker__buttons{
+    display: flex;
+    flex-direction: column;
 }
 
 .infobar {

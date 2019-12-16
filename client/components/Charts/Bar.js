@@ -90,6 +90,55 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
       });
   }
 
+  function calculateXInterval(length) {
+    const results = [];
+    length = length - 1;
+    for (let i = 5; i < 11; i++) {
+      const interval = Math.round(length / i);
+      const remainder = length % interval;
+
+      if (remainder > 0) {
+        results.push(interval);
+      }
+    }
+
+    return results.pop();
+  }
+
+  function buildXTicks() {
+    if (!data) {
+      return [];
+    }
+
+    const xValues = Object.keys(data);
+
+    const tickInterval = calculateXInterval(xValues.length);
+
+    return xValues.reduce((tickValues, xValue, i) => {
+      if (xValues.length <= 10 || i % tickInterval === 0) {
+        tickValues.push(xValue);
+      }
+
+      return tickValues;
+    }, []);
+  }
+
+  function calculateYMax() {
+    if (!data) {
+      return 1;
+    }
+
+    return Object.keys(data).reduce((acc, xVal) => {
+      Object.keys(data[xVal]).forEach(key => {
+        if (data[xVal][key] > acc) {
+          acc = data[xVal][key];
+        }
+      });
+
+      return acc;
+    }, 1);
+  }
+
   return (
     <div className="charts__chart">
       <h2 className="charts__title">{title}</h2>
@@ -97,11 +146,12 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
         xType="ordinal"
         onMouseLeave={_onMouseLeave}
         width={graphWidth}
+        yDomain={[0, calculateYMax() * 1.1]}
         height={300}
       >
         <HorizontalGridLines />
-        <XAxis />
-        <YAxis tickTotal={10} />
+        <XAxis tickValues={buildXTicks()} />
+        <YAxis tickTotal={Math.min(calculateYMax(), 10)} />
         {buildBars()}
         {crosshairData.value ? (
           <Hint value={crosshairData.value}>{crosshairData.text}</Hint>
