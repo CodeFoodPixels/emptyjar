@@ -93,7 +93,7 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
   function calculateXInterval(length) {
     const results = [];
 
-    if (graphWidth >= (length * 75)) {
+    if (graphWidth >= length * 100) {
       return 1;
     }
 
@@ -103,7 +103,7 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
       const interval = Math.round(calcLength / i);
       const remainder = calcLength % interval;
 
-      const labelsWidth = Math.floor(length/interval) * 75;
+      const labelsWidth = Math.floor(length / interval) * 100;
 
       if (graphWidth >= labelsWidth && (length < 10 || remainder > 0)) {
         results.push(interval);
@@ -133,7 +133,7 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
 
   function calculateYMax() {
     if (!data) {
-      return 1;
+      return 0;
     }
 
     return Object.keys(data).reduce((acc, xVal) => {
@@ -144,7 +144,7 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
       });
 
       return acc;
-    }, 1);
+    }, 0);
   }
 
   return (
@@ -157,13 +157,13 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
         yDomain={[0, calculateYMax() * 1.1]}
         height={300}
       >
-        <HorizontalGridLines />
-        <XAxis tickValues={buildXTicks()} />
-        <YAxis tickTotal={Math.min(calculateYMax(), 10)} />
+        <HorizontalGridLines tickTotal={Math.min(calculateYMax(), 10)} />
         {buildBars()}
         {crosshairData.value ? (
           <Hint value={crosshairData.value}>{crosshairData.text}</Hint>
         ) : null}
+        <XAxis tickSizeInner={0} tickValues={buildXTicks()} />
+        <YAxis tickSizeInner={0} tickTotal={Math.min(calculateYMax(), 10)} />
       </XYPlot>
     </div>
   );

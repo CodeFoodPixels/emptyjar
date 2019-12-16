@@ -7,8 +7,8 @@
 }
 
 html {
-    height:100%;
-    font-size:10px;
+    height: 100%;
+    font-size: 10px;
 }
 
 body, html {
@@ -17,9 +17,9 @@ body, html {
 }
 
 body {
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    font-size:1.6rem;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.6rem;
 }
 
 .wrapper {
@@ -58,9 +58,10 @@ body {
     display: flex;
 }
 
-.rangepicker__buttons{
+.rangepicker__buttons {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
 }
 
 .infobar {
@@ -153,15 +154,32 @@ body {
 .Selectable .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
     background-color: var(--primary-color) !important;
     color: #000000;
-  }
-  .Selectable .DayPicker-Day {
+}
+
+.Selectable .DayPicker-Day {
     border-radius: 0 !important;
-  }
-  .Selectable .DayPicker-Day--start {
+}
+
+.Selectable .DayPicker-Day--start {
     border-top-left-radius: 50% !important;
     border-bottom-left-radius: 50% !important;
-  }
-  .Selectable .DayPicker-Day--end {
+}
+
+.Selectable .DayPicker-Day--end {
     border-top-right-radius: 50% !important;
     border-bottom-right-radius: 50% !important;
-  }
+}
+
+.rv-xy-plot__axis__tick__text {
+    fill: #000000 !important;
+    font-size: 1.6rem !important;
+}
+
+.rv-xy-plot__axis__line, .rv-xy-plot__axis__tick__line {
+    stroke: #000000 !important;
+    stroke-width: 1px !important;
+}
+
+.rv-xy-plot__grid-lines__line {
+    stroke: #999999 !important;
+}
