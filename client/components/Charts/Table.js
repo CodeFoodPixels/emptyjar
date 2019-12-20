@@ -46,7 +46,7 @@ const Table = ({
   function buildRows() {
     const sortedKeys = Object.keys(data).sort((a, b) => {
       const key = Object.keys(data[a])[0];
-      return data[a][key] < data[b][key];
+      return data[b][key] - data[a][key];
     });
 
     const start = paginationData.start;
