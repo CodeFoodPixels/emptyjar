@@ -19,14 +19,14 @@ const RangePicker = ({ from, to, updateQueryDates }) => {
     const newState = {};
 
     if (state.selectedBothDates) {
-      newState.from = day;
+      newState.from = new Date(day);
       newState.selectedBothDates = false;
     } else if (
       !state.selectedBothDates &&
       DateUtils.isSameDay(state.from, day)
     ) {
       newState.from = state.from;
-      newState.to = day;
+      newState.to = new Date(day);
       newState.selectedBothDates = true;
     } else {
       const dateRange = DateUtils.addDayToRange(day, state);
@@ -53,100 +53,59 @@ const RangePicker = ({ from, to, updateQueryDates }) => {
     });
   }
 
-  function handleTodayClick() {
-    const newDates = {
-      from: new Date(),
-      to: new Date()
-    };
-
+  function setNewDates(newDates) {
     newDates.from.setUTCHours(0, 0, 0, 0);
     newDates.to.setUTCHours(23, 59, 59, 999);
 
-    setState({
-      ...newDates,
-      selectedBothDates: true
+    setState(
+      {
+        ...newDates,
+        selectedBothDates: true
+      },
+      setQueryDates
+    );
+  }
+
+  function handleTodayClick() {
+    setNewDates({
+      from: new Date(),
+      to: new Date()
     });
-    updateQueryDates(newDates);
   }
 
   function handleYesterdayClick() {
-    const newDates = {
+    setNewDates({
       from: new Date(Date.now() - oneDay),
       to: new Date(Date.now() - oneDay)
-    };
-
-    newDates.from.setUTCHours(0, 0, 0, 0);
-    newDates.to.setUTCHours(23, 59, 59, 999);
-
-    setState({
-      ...newDates,
-      selectedBothDates: true
     });
-    updateQueryDates(newDates);
   }
 
   function handleLast7DaysClick() {
-    const newDates = {
+    setNewDates({
       from: new Date(Date.now() - oneDay * 6),
       to: new Date(Date.now())
-    };
-
-    newDates.from.setUTCHours(0, 0, 0, 0);
-    newDates.to.setUTCHours(23, 59, 59, 999);
-
-    setState({
-      ...newDates,
-      selectedBothDates: true
     });
-    updateQueryDates(newDates);
   }
 
   function handleLast30DaysClick() {
-    const newDates = {
+    setNewDates({
       from: new Date(Date.now() - oneDay * 29),
       to: new Date(Date.now())
-    };
-
-    newDates.from.setUTCHours(0, 0, 0, 0);
-    newDates.to.setUTCHours(23, 59, 59, 999);
-
-    setState({
-      ...newDates,
-      selectedBothDates: true
     });
-    updateQueryDates(newDates);
   }
 
   function handleLast60DaysClick() {
-    const newDates = {
+    setNewDates({
       from: new Date(Date.now() - oneDay * 59),
       to: new Date(Date.now())
-    };
-
-    newDates.from.setUTCHours(0, 0, 0, 0);
-    newDates.to.setUTCHours(23, 59, 59, 999);
-
-    setState({
-      ...newDates,
-      selectedBothDates: true
     });
-    updateQueryDates(newDates);
   }
 
   function handleLast90DaysClick() {
-    const newDates = {
+    setNewDates({
       from: new Date(Date.now() - oneDay * 89),
       to: new Date(Date.now())
-    };
-
-    newDates.from.setUTCHours(0, 0, 0, 0);
-    newDates.to.setUTCHours(23, 59, 59, 999);
-
-    setState({
-      ...newDates,
-      selectedBothDates: true
     });
-    updateQueryDates(newDates);
   }
 
   return (
