@@ -1,16 +1,12 @@
 const url = require("url");
-let domains = ["(.+)"];
-try {
-  const config = require("./config.json");
-  if (config.allowedDomains.length > 0) {
-    domains = config.allowedDomains;
-  }
-} catch (e) {
-  console.log("Config file not found, using default domains");
-}
+const config = require("./config");
 
 const matcher = new RegExp(
-  `^${domains.length > 1 ? `(${domains.join("|")})` : domains[0]}$`
+  `^${
+    config.allowedDomains.length > 1
+      ? `(${config.allowedDomains.join("|")})`
+      : config.allowedDomains[0]
+  }$`
 );
 
 module.exports = hitUrl => {
