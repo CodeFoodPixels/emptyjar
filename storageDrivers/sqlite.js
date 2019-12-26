@@ -60,6 +60,10 @@ module.exports = class sqlite {
             data[key] = data[key] ? 1 : 0;
           }
 
+          if (data[key] instanceof Date) {
+            data[key] = Math.floor(data[key].getTime() / 1000);
+          }
+
           keyedData[`$${key}`] = data[key];
         });
 
@@ -93,6 +97,10 @@ module.exports = class sqlite {
 
         if (typeof param.value === "boolean") {
           param.value = param.value ? 1 : 0;
+        }
+
+        if (param.value instanceof Date) {
+          param.value = Math.floor(param.value.getTime() / 1000);
         }
 
         queryParams.push(`${param.key} ${operator} ?`);

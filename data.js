@@ -6,7 +6,7 @@ module.exports = {
   logHit(data) {
     const hitData = {
       ...data,
-      timestamp: Math.floor(Date.now() / 1000)
+      timestamp: new Date()
     };
 
     return storage.insertOne("hits", hitData);
@@ -26,21 +26,27 @@ module.exports = {
 
   pageHitUnique(signature) {
     return storage
-      .find("page_hit_signatures", {
-        signature: { value: signature }
-      })
-      .then(rows => {
-        return rows.length > 0 ? false : true;
+      .find("page_hit_signatures", [
+        {
+          key: "signature",
+          value: signature
+        }
+      ])
+      .then(results => {
+        return results.length > 0 ? false : true;
       });
   },
 
   siteHitUnique(signature) {
     return storage
-      .find("site_hit_signatures", {
-        signature: { value: signature }
-      })
-      .then(rows => {
-        return rows.length > 0 ? false : true;
+      .find("site_hit_signatures", [
+        {
+          key: "signature",
+          value: signature
+        }
+      ])
+      .then(results => {
+        return results.length > 0 ? false : true;
       });
   },
 
@@ -99,19 +105,17 @@ module.exports = {
     }
 
     if (params.from) {
-      const fromDate = new Date(params.from);
       queryParams.push({
         key: "timestamp",
-        value: Math.floor(fromDate.getTime() / 1000),
+        value: new Date(params.from),
         operator: ">="
       });
     }
 
     if (params.to) {
-      const toDate = new Date(params.to);
       queryParams.push({
         key: "timestamp",
-        value: Math.floor(toDate.getTime() / 1000),
+        value: new Date(params.to),
         operator: "<="
       });
     }
