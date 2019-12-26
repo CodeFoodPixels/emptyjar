@@ -20,6 +20,7 @@
   "dependencies": {
     "bowser": "^2.7.0",
     "geoip-country": "^3.3.2",
+    "mongodb": "^3.4.1",
     "sqlite3": "^4.1.0"
   },
   "devDependencies": {

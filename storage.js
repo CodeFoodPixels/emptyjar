@@ -2,6 +2,8 @@ const config = require("./config");
 
 function loadDriver() {
   switch (config.storageDriver) {
+    case "mongodb":
+      return require("./storageDrivers/mongodb");
     case "sqlite":
     default:
       return require("./storageDrivers/sqlite");
