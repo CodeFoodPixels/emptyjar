@@ -2,10 +2,14 @@
   "name": "emptyjar",
   "version": "1.0.0",
   "description": "A self-hosted analytics system that doesn't use cookies",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "prettier": "prettier --write \"**/*.js\""
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "build:watch": "webpack --mode=development --watch",
+    "prettier": "prettier --write \"**/*.js\"",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -21,9 +25,23 @@
     "bowser": "^2.7.0",
     "geoip-country": "^3.3.2",
     "mongodb": "^3.4.1",
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^4.1.0",
+    "country-list": "^2.2.0",
+    "react": "^16.9.0",
+    "react-day-picker": "^7.4.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.1",
+    "react-vis": "^1.11.7",
+    "redux": "^4.0.4"
   },
   "devDependencies": {
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "@babel/core": "^7.6.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9"
   }
 }

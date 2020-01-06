@@ -1,7 +1,7 @@
 const path = require("path");
 
-const clientPath = path.resolve(__dirname);
-const buildPath = path.resolve(__dirname, "..", "build");
+const clientPath = path.resolve(__dirname, "client");
+const buildPath = path.resolve(__dirname, "build");
 
 module.exports = {
   entry: {
