@@ -24,16 +24,19 @@ export default (state, action) => {
       const days = Math.round(
         Math.abs(state.queryDates.to - state.queryDates.from) / oneDay
       );
-      const dayHits = {};
+      const views = {};
+      const uniques = {};
 
       for (let i = 0; i < days; i++) {
-        dayHits[
-          dateYMD(new Date(state.queryDates.from.getTime() + oneDay * i))
-        ] = { Views: 0, Uniques: 0 };
+        const date = dateYMD(
+          new Date(state.queryDates.from.getTime() + oneDay * i)
+        );
+
+        views[date] = { key: date, value: 0 };
+        uniques[date] = { key: date, value: 0 };
       }
 
       const data = {
-        dayHits,
         countries: {},
         devices: {},
         browsers: {},
@@ -70,11 +73,11 @@ export default (state, action) => {
           data.urls[hit.url] = { "Total Views": 0, "Unique Views": 0 };
         }
 
-        data.dayHits[dateString].Views += 1;
+        views[dateString].value += 1;
         data.urls[hit.url]["Total Views"] += 1;
         data.totalHits += 1;
         if (hit.site_hit_unique) {
-          data.dayHits[dateString].Uniques += 1;
+          uniques[dateString].value += 1;
           data.countries[country].Uniques += 1;
           data.devices[hit.device_type].Uniques += 1;
           data.browsers[hit.browser].Uniques += 1;
@@ -87,6 +90,9 @@ export default (state, action) => {
           data.totalPageUniques += 1;
         }
       });
+
+      data.views = Object.values(views);
+      data.uniques = Object.values(uniques);
 
       return {
         ...state,

@@ -4,7 +4,8 @@ import Bar from "./Charts/Bar";
 import Table from "./Charts/Table";
 
 const Charts = ({
-  dayHits,
+  views,
+  uniques,
   urls,
   browsers,
   operatingSystems,
@@ -13,10 +14,20 @@ const Charts = ({
   totalUniques,
   countries
 }) => {
+  const barData = [];
+
+  if (views && views.length > 0) {
+    barData.push({ name: "Views", values: views });
+  }
+
+  if (uniques && uniques.length > 0) {
+    barData.push({ name: "Uniques", values: uniques });
+  }
+
   return (
     <>
       <div className="charts__row">
-        <Bar data={dayHits} title="Total hits" maxWidth={970} />
+        <Bar data={barData} title="Total hits" maxWidth={970} />
       </div>
       <div className="charts__row">
         <Table
@@ -69,7 +80,8 @@ const Charts = ({
 Charts.displayName = "Charts";
 
 export default connect(({ data }) => ({
-  dayHits: data.dayHits,
+  views: data.views,
+  uniques: data.uniques,
   urls: data.urls,
   browsers: data.browsers,
   operatingSystems: data.operatingSystems,

@@ -43,9 +43,9 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
   }
 
   function _onNearestX(value, { index }) {
-    const body = Object.keys(data[value.x]).map(key => (
-      <p key={key}>
-        <b>{key}:</b> {data[value.x][key]}
+    const body = data.map(dataSet => (
+      <p key={dataSet.name}>
+        <b>{dataSet.name}:</b> {dataSet.values[index].value}
       </p>
     ));
 
@@ -61,33 +61,26 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
   }
 
   function buildBars() {
-    if (!data) {
+    if (data.length === 0) {
       return null;
     }
 
-    return Object.keys(data)
-      .reduce((acc, xVal) => {
-        Object.keys(data[xVal]).forEach((key, i) => {
-          if (!acc[i]) {
-            acc[i] = [];
-          }
+    return data.map((dataSet, i) => {
+      const xyValues = dataSet.values.map(dataItem => ({
+        x: dataItem.key,
+        y: dataItem.value
+      }));
 
-          acc[i].push({ x: xVal, y: data[xVal][key] });
-        });
-
-        return acc;
-      }, [])
-      .map((dataSet, i) => {
-        return (
-          <VerticalBarSeries
-            onNearestX={i === 0 ? _onNearestX : undefined}
-            y0={200}
-            data={dataSet}
-            key={i}
-            color={colors[i]}
-          />
-        );
-      });
+      return (
+        <VerticalBarSeries
+          onNearestX={i === 0 ? _onNearestX : undefined}
+          y0={200}
+          data={xyValues}
+          key={i}
+          color={colors[i]}
+        />
+      );
+    });
   }
 
   function calculateXInterval(length) {
@@ -114,11 +107,11 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
   }
 
   function buildXTicks() {
-    if (!data) {
+    if (data.length === 0) {
       return [];
     }
 
-    const xValues = Object.keys(data);
+    const xValues = data[0].values.map(value => value.key);
 
     const tickInterval = calculateXInterval(xValues.length);
 
@@ -132,19 +125,19 @@ const Bar = ({ data, title, maxWidth = 450 }) => {
   }
 
   function calculateYMax() {
-    if (!data) {
+    if (data.length === 0) {
       return 0;
     }
 
-    return Object.keys(data).reduce((acc, xVal) => {
-      Object.keys(data[xVal]).forEach(key => {
-        if (data[xVal][key] > acc) {
-          acc = data[xVal][key];
-        }
-      });
-
-      return acc;
-    }, 0);
+    return Math.max(
+      ...data.map(dataSet => {
+        return Math.max(
+          ...dataSet.values.map(set => {
+            return set.value;
+          })
+        );
+      })
+    );
   }
 
   return (
