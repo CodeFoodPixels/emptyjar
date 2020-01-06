@@ -57,13 +57,12 @@ const RangePicker = ({ from, to, updateQueryDates }) => {
     newDates.from.setUTCHours(0, 0, 0, 0);
     newDates.to.setUTCHours(23, 59, 59, 999);
 
-    setState(
-      {
-        ...newDates,
-        selectedBothDates: true
-      },
-      setQueryDates
-    );
+    setState({
+      ...newDates,
+      selectedBothDates: true
+    });
+
+    updateQueryDates(newDates);
   }
 
   function handleTodayClick() {
