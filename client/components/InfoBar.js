@@ -1,7 +1,13 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useContext } from "react";
+import { StateContext } from "../context";
 
-const InfoBar = ({ totalHits, totalUniques, totalPageUniques }) => {
+const InfoBar = () => {
+  const {
+    state: {
+      data: { totalHits, totalUniques, totalPageUniques }
+    }
+  } = useContext(StateContext);
+
   return (
     <section className="infobar">
       <div className="infobar__stat">
@@ -22,8 +28,4 @@ const InfoBar = ({ totalHits, totalUniques, totalPageUniques }) => {
 
 InfoBar.displayName = "InfoBar";
 
-export default connect(({ data }) => ({
-  totalHits: data.totalHits,
-  totalUniques: data.totalUniques,
-  totalPageUniques: data.totalPageUniques
-}))(InfoBar);
+export default InfoBar;

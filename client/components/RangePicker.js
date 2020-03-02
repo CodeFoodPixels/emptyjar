@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React, { useState, useContext } from "react";
 import DayPicker, { DateUtils } from "react-day-picker";
 import "react-day-picker/lib/style.css";
 import { dateYMD } from "../helpers";
+import { StateContext } from "../context";
 
 const oneDay = 86400000;
 
-const RangePicker = ({ from, to, updateQueryDates }) => {
+const RangePicker = () => {
+  const {
+    state: {
+      queryDates: { to, from }
+    },
+    dispatch
+  } = useContext(StateContext);
   const today = new Date();
 
   const [state, setState] = useState({
@@ -14,6 +20,12 @@ const RangePicker = ({ from, to, updateQueryDates }) => {
     to,
     selectedBothDates: true
   });
+
+  const updateQueryDates = queryDates =>
+    dispatch({
+      type: "UPDATE_QUERYDATES",
+      queryDates
+    });
 
   function handleDayClick(day) {
     const newState = {};
@@ -147,16 +159,4 @@ const RangePicker = ({ from, to, updateQueryDates }) => {
 
 RangePicker.displayName = "RangePicker";
 
-export default connect(
-  ({ queryDates }) => ({
-    from: queryDates.from,
-    to: queryDates.to
-  }),
-  dispatch => ({
-    updateQueryDates: queryDates =>
-      dispatch({
-        type: "UPDATE_QUERYDATES",
-        queryDates
-      })
-  })
-)(RangePicker);
+export default RangePicker;

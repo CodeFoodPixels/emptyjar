@@ -4,48 +4,29 @@ import App from "./components/App.js";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose } from "redux";
 import reducers from "./reducers";
+import { StateProvider } from "./context.js";
 
 const fetchMiddleware = () => dispatch => async action => {
   if (action.type === "FETCH_DATA") {
-    const query = Object.keys(action.params)
-      .map(
-        k => encodeURIComponent(k) + "=" + encodeURIComponent(action.params[k])
-      )
-      .join("&");
-
-    const res = await fetch(`/api/hits?${query}`);
-
-    const data = await res.json();
-
-    dispatch({
-      type: "UPDATE_DATA",
-      data
-    });
   }
 
   dispatch(action);
 };
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const fromDate = new Date(Date.now() - 86400000 * 6);
 fromDate.setUTCHours(0, 0, 0, 0);
 const toDate = new Date();
 toDate.setUTCHours(23, 59, 59, 999);
-const store = createStore(
-  reducers,
-  {
-    queryDates: {
-      from: fromDate,
-      to: toDate
-    },
-    data: []
+const initialState = {
+  queryDates: {
+    from: fromDate,
+    to: toDate
   },
-  composeEnhancers(applyMiddleware(fetchMiddleware))
-);
+  data: []
+};
 
 render(
-  <Provider store={store}>
+  <StateProvider reducer={reducers} initialState={initialState}>
     <App />
-  </Provider>,
+  </StateProvider>,
   document.getElementById("root")
 );

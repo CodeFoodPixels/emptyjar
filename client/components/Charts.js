@@ -1,19 +1,25 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useContext } from "react";
 import Bar from "./Charts/Bar";
 import Table from "./Charts/Table";
+import { StateContext } from "../context";
 
-const Charts = ({
-  views,
-  uniques,
-  urls,
-  browsers,
-  operatingSystems,
-  devices,
-  totalHits,
-  totalUniques,
-  countries
-}) => {
+const Charts = ({}) => {
+  const {
+    state: {
+      data: {
+        views,
+        uniques,
+        urls,
+        browsers,
+        operatingSystems,
+        devices,
+        totalHits,
+        totalUniques,
+        countries
+      }
+    },
+    dispatch
+  } = useContext(StateContext);
   const barData = [];
 
   if (views && views.length > 0) {
@@ -79,14 +85,4 @@ const Charts = ({
 
 Charts.displayName = "Charts";
 
-export default connect(({ data }) => ({
-  views: data.views,
-  uniques: data.uniques,
-  urls: data.urls,
-  browsers: data.browsers,
-  operatingSystems: data.operatingSystems,
-  devices: data.devices,
-  totalHits: data.totalHits,
-  totalUniques: data.totalUniques,
-  countries: data.countries
-}))(Charts);
+export default Charts;
