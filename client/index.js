@@ -13,9 +13,9 @@ const fetchMiddleware = () => dispatch => async action => {
   dispatch(action);
 };
 const fromDate = new Date(Date.now() - 86400000 * 6);
-fromDate.setUTCHours(0, 0, 0, 0);
+fromDate.setHours(0, 0, 0, 0);
 const toDate = new Date();
-toDate.setUTCHours(23, 59, 59, 999);
+toDate.setHours(23, 59, 59, 999);
 const initialState = {
   queryDates: {
     from: fromDate,
