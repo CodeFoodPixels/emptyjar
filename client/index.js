@@ -11,9 +11,9 @@ toDate.setHours(23, 59, 59, 999);
 const initialState = {
   queryDates: {
     from: fromDate,
-    to: toDate,
+    to: toDate
   },
-  data: [],
+  data: []
 };
 
 render(

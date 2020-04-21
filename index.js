@@ -118,7 +118,10 @@ async function ping(req, res) {
       `${userAgent.browser.name || ""} ${userAgent.browser.version ||
         ""}`.trim() || "Unknown";
 
-    const operating_system_version = userAgent.os.name.toLowerCase() === "windows" ? userAgent.os.versionName : userAgent.os.version;
+    const operating_system_version =
+      userAgent.os.name.toLowerCase() === "windows"
+        ? userAgent.os.versionName
+        : userAgent.os.version;
     const operating_system =
       `${userAgent.os.name || ""} ${operating_system_version || ""}`.trim() ||
       "Unknown";
