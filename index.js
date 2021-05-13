@@ -30,10 +30,10 @@ server.on("request", (req, res) => {
     req.query = reqUrl.searchParams;
 
     switch (pathName) {
-      case "/ping.png":
+      case "/ping":
         ping(req, res);
         break;
-      case "/ping":
+      case "/test":
         res.end('<script src="/ping.js"></script>');
         break;
       case "/beacon":
