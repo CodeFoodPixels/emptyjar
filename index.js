@@ -167,6 +167,7 @@ async function processHit(hit) {
 
     data.logHit({
       url: hit.url,
+      referrer: hit.referrer || "Empty",
       browser,
       operating_system,
       device_type,
@@ -184,6 +185,10 @@ function hits(req, res) {
 
   if (req.query.get("url")) {
     params.url = req.query.get("url");
+  }
+
+  if (req.query.get("referrer")) {
+    params.referrer = req.query.get("referrer");
   }
 
   if (req.query.get("operating_system")) {

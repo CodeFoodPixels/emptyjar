@@ -23,7 +23,7 @@ module.exports = class sqlite {
       if (!dbFileExists) {
         this.db.serialize(() => {
           this.db.run(
-            "CREATE TABLE hits (url TEXT, browser TEXT, browser_version TEXT, operating_system TEXT, operating_system_version TEXT, device_type TEXT, country TEXT, page_hit_unique INT, site_hit_unique INT, timestamp INT)",
+            "CREATE TABLE hits (url TEXT, referrer TEXT, browser TEXT, browser_version TEXT, operating_system TEXT, operating_system_version TEXT, device_type TEXT, country TEXT, page_hit_unique INT, site_hit_unique INT, timestamp INT)",
             () => {
               this.db.run(
                 "CREATE TABLE page_hit_signatures (signature TEXT PRIMARY KEY)",

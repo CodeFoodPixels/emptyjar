@@ -4,6 +4,7 @@
 
   function trackHit() {
     const data = {
+      r: document.referrer,
       url: window.location.href
     };
 

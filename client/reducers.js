@@ -42,6 +42,7 @@ export default (state, action) => {
         browsers: {},
         operatingSystems: {},
         urls: {},
+        referrers: {},
         totalHits: 0,
         totalPageUniques: 0,
         totalUniques: 0
@@ -73,8 +74,15 @@ export default (state, action) => {
           data.urls[hit.url] = { "Total Views": 0, "Unique Views": 0 };
         }
 
+        if (!data.referrers[hit.referrer]) {
+          data.referrers[hit.referrer] = {
+            "Total Views": 0
+          };
+        }
+
         views[dateString].value += 1;
         data.urls[hit.url]["Total Views"] += 1;
+        data.referrers[hit.referrer]["Total Views"] += 1;
         data.totalHits += 1;
         if (hit.site_hit_unique) {
           uniques[dateString].value += 1;

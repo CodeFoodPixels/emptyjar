@@ -10,6 +10,7 @@ const Charts = ({}) => {
         views,
         uniques,
         urls,
+        referrers,
         browsers,
         operatingSystems,
         devices,
@@ -41,6 +42,14 @@ const Charts = ({}) => {
           total={totalHits}
           columnName="URL"
           data={urls}
+        />
+      </div>
+      <div className="charts__row">
+        <Table
+          title="Hits by Referrer"
+          total={totalHits}
+          columnName="Referrer URL"
+          data={referrers}
         />
       </div>
       <div className="charts__row">

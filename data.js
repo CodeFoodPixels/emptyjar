@@ -60,6 +60,13 @@ module.exports = {
       });
     }
 
+    if (params.referrer) {
+      queryParams.push({
+        key: "referrer",
+        value: params.referrer
+      });
+    }
+
     if (params.operating_system) {
       queryParams.push({
         key: "operating_system",
