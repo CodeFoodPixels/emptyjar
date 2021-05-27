@@ -15,6 +15,7 @@ const Charts = ({}) => {
         operatingSystems,
         devices,
         totalHits,
+        totalReferredHits,
         totalUniques,
         countries
       }
@@ -47,7 +48,7 @@ const Charts = ({}) => {
       <div className="charts__row">
         <Table
           title="Hits by Referrer"
-          total={totalHits}
+          total={totalReferredHits}
           columnName="Referrer URL"
           data={referrers}
         />

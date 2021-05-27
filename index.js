@@ -167,7 +167,7 @@ async function processHit(hit) {
 
     data.logHit({
       url: hit.url,
-      referrer: hit.referrer || "Empty",
+      referrer: hit.r || "",
       browser,
       operating_system,
       device_type,
