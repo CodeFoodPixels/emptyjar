@@ -48,11 +48,11 @@ const RangePicker = () => {
     }
 
     if (newState.from) {
-      newState.from.setHours(0, 0, 0, 0);
+      newState.from.setUTCHours(0, 0, 0, 0);
     }
 
     if (newState.to) {
-      newState.to.setHours(23, 59, 59, 999);
+      newState.to.setUTCHours(23, 59, 59, 999);
     }
 
     setState(newState);
@@ -66,8 +66,8 @@ const RangePicker = () => {
   }
 
   function setNewDates(newDates) {
-    newDates.from.setHours(0, 0, 0, 0);
-    newDates.to.setHours(23, 59, 59, 999);
+    newDates.from.setUTCHours(0, 0, 0, 0);
+    newDates.to.setUTCHours(23, 59, 59, 999);
 
     setState({
       ...newDates,

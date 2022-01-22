@@ -5,8 +5,8 @@ storage.init();
 module.exports = {
   logHit(data) {
     const hitData = {
-      ...data,
-      timestamp: new Date()
+      timestamp: new Date(),
+			...data
     };
 
     return storage.insertOne("hits", hitData);
