@@ -86,13 +86,16 @@ body {
     box-sizing: border-box;
     text-align: center;
     min-width: 310px;
-	width: calc(100% - 10px);
-	max-width: 1000px;
+  width: calc(100% - 10px);
+  max-width: 1000px;
 }
 
 .infobar__stat {
     margin: 10px;
     min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .infobar__stat-value {
@@ -194,4 +197,30 @@ body {
 
 .rv-xy-plot__grid-lines__line {
     stroke: #999999 !important;
+}
+
+button {
+  padding: 5px;
+  border: 2px solid black;
+  background: transparent;
+}
+
+button[disabled] {
+  border: 2px solid #aaa;
+  color: #aaa;
+}
+
+button:hover {
+  background: #999999;
+  color: #ffffff;
+}
+
+button[disabled]:hover {
+  background: transparent;
+  color: #aaa;
+}
+
+.charts__pagination {
+  display: flex;
+  justify-content: space-between;
 }

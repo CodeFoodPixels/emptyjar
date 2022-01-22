@@ -93,27 +93,29 @@ const Table = ({
   return (
     <div className="charts__chart">
       <h2 className="charts__title">{title}</h2>
-      <button
-        onClick={() => {
-          setPaginationData({
-            start: paginationData.start - limit
-          });
-        }}
-        disabled={paginationData.start === 0}
-      >
-        &lt;
-      </button>
+      <div className="charts__pagination">
+        <button
+          onClick={() => {
+            setPaginationData({
+              start: paginationData.start - limit
+            });
+          }}
+          disabled={paginationData.start === 0}
+        >
+          &lt;
+        </button>
 
-      <button
-        onClick={() => {
-          setPaginationData({
-            start: paginationData.start + limit
-          });
-        }}
-        disabled={paginationData.start + limit >= Object.keys(data).length}
-      >
-        &gt;
-      </button>
+        <button
+          onClick={() => {
+            setPaginationData({
+              start: paginationData.start + limit
+            });
+          }}
+          disabled={paginationData.start + limit >= Object.keys(data).length}
+        >
+          &gt;
+        </button>
+      </div>
       <table className="charts__table">
         <thead>
           <tr>
