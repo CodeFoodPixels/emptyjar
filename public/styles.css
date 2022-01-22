@@ -78,6 +78,18 @@ body {
     min-width: 310px;
 }
 
+.footer {
+    background: var(--background-light);
+    padding: 10px;
+    margin: 5px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: center;
+    min-width: 310px;
+	width: calc(100% - 10px);
+	max-width: 1000px;
+}
+
 .infobar__stat {
     margin: 10px;
     min-width: 140px;
