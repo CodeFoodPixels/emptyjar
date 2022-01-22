@@ -203,11 +203,13 @@ button {
   padding: 5px;
   border: 2px solid black;
   background: transparent;
+  font-weight: bold;
 }
 
 button[disabled] {
   border: 2px solid #aaa;
   color: #aaa;
+  font-weight: bold;
 }
 
 button:hover {
@@ -222,5 +224,16 @@ button[disabled]:hover {
 
 .charts__pagination {
   display: flex;
-  justify-content: space-between;
+}
+
+.charts__pagination-button {
+  flex: 0 0 50%;
+}
+
+.charts__pagination-button--prev {
+  text-align: left;
+}
+
+.charts__pagination-button--next {
+  text-align: right;
 }
