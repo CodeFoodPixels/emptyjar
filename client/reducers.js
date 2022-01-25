@@ -12,6 +12,12 @@ overwrite([
   }
 ]);
 
+function removeTrailingSlashes(str) {
+  let i = str.length;
+  while (str[--i] === "/");
+  return str.slice(0, i + 1);
+}
+
 export default (state, action) => {
   switch (action.type) {
     case "UPDATE_QUERYDATES":
@@ -51,6 +57,8 @@ export default (state, action) => {
 
       action.data.forEach(hit => {
         const dateString = dateYMD(new Date(hit.timestamp));
+        const url = removeTrailingSlashes(hit.url);
+        const referrer = removeTrailingSlashes(hit.referrer);
 
         let country = getName(hit.country);
         country = country ? country : "Unknown";
@@ -71,22 +79,22 @@ export default (state, action) => {
           data.operatingSystems[hit.operating_system] = { Uniques: 0 };
         }
 
-        if (!data.urls[hit.url]) {
-          data.urls[hit.url] = { "Total Views": 0, "Unique Views": 0 };
+        if (!data.urls[url]) {
+          data.urls[url] = { "Total Views": 0, "Unique Views": 0 };
         }
 
-        if (hit.referrer !== "") {
-          if (!data.referrers[hit.referrer]) {
-            data.referrers[hit.referrer] = {
+        if (referrer !== "") {
+          if (!data.referrers[referrer]) {
+            data.referrers[referrer] = {
               "Total Views": 0
             };
           }
-          data.referrers[hit.referrer]["Total Views"] += 1;
+          data.referrers[referrer]["Total Views"] += 1;
           data.totalReferredHits += 1;
         }
 
         views[dateString].value += 1;
-        data.urls[hit.url]["Total Views"] += 1;
+        data.urls[url]["Total Views"] += 1;
         data.totalHits += 1;
 
         if (hit.site_hit_unique) {
@@ -99,7 +107,7 @@ export default (state, action) => {
         }
 
         if (hit.page_hit_unique) {
-          data.urls[hit.url]["Unique Views"] += 1;
+          data.urls[url]["Unique Views"] += 1;
           data.totalPageUniques += 1;
         }
       });
