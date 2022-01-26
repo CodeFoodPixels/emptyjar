@@ -31,7 +31,6 @@
     "react-chartjs-2": "^4.0.1",
     "react-day-picker": "^7.4.0",
     "react-dom": "^16.9.0",
-    "react-vis": "^1.11.7",
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
