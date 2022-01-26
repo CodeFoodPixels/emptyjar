@@ -7,6 +7,7 @@ const Charts = ({}) => {
   const {
     state: {
       data: {
+        dates,
         views,
         uniques,
         urls,
@@ -22,14 +23,23 @@ const Charts = ({}) => {
     },
     dispatch
   } = useContext(StateContext);
-  const barData = [];
+  const barData = {
+    labels: dates,
+    data: []
+  };
 
-  if (views && views.length > 0) {
-    barData.push({ name: "Views", values: views });
+  if (views && Object.keys(views).length > 0) {
+    barData.data.push({
+      name: "Views",
+      values: dates.map(date => views[date])
+    });
   }
 
-  if (uniques && uniques.length > 0) {
-    barData.push({ name: "Uniques", values: uniques });
+  if (uniques && Object.keys(uniques).length > 0) {
+    barData.data.push({
+      name: "Uniques",
+      values: dates.map(date => uniques[date])
+    });
   }
 
   return (

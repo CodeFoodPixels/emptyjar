@@ -120,16 +120,13 @@ body {
     box-sizing: border-box;
 }
 
-.charts__title {
-    margin-top: 0px;
+.charts__chart-wrapper {
+	height: 300px;
 }
 
-.charts__tooltip {
-    background: #000000;
-    border-radius: 5px;
-    padding: 5px;
-    min-width: 150px;
-    font-size: 12px;
+
+.charts__title {
+    margin-top: 0px;
 }
 
 .charts__table {

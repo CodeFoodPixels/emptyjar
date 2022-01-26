@@ -23,10 +23,12 @@
   "homepage": "https://github.com/CodeFoodPixels/EmptyJar#readme",
   "dependencies": {
     "bowser": "^2.7.0",
+    "chart.js": "^3.7.0",
     "country-list": "^2.2.0",
     "geoip-country": "^3.3.2",
     "mongodb": "^3.4.1",
     "react": "^16.9.0",
+    "react-chartjs-2": "^4.0.1",
     "react-day-picker": "^7.4.0",
     "react-dom": "^16.9.0",
     "react-vis": "^1.11.7",

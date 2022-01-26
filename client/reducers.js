@@ -30,19 +30,11 @@ export default (state, action) => {
       const days = Math.round(
         Math.abs(state.queryDates.to - state.queryDates.from) / oneDay
       );
-      const views = {};
-      const uniques = {};
-
-      for (let i = 0; i < days; i++) {
-        const date = dateYMD(
-          new Date(state.queryDates.from.getTime() + oneDay * i)
-        );
-
-        views[date] = { key: date, value: 0 };
-        uniques[date] = { key: date, value: 0 };
-      }
 
       const data = {
+        dates: [],
+        views: {},
+        uniques: {},
         countries: {},
         devices: {},
         browsers: {},
@@ -54,6 +46,16 @@ export default (state, action) => {
         totalPageUniques: 0,
         totalUniques: 0
       };
+
+      for (let i = 0; i < days; i++) {
+        const date = dateYMD(
+          new Date(state.queryDates.from.getTime() + oneDay * i)
+        );
+
+        data.views[date] = 0;
+        data.uniques[date] = 0;
+        data.dates.push(date);
+      }
 
       action.data.forEach(hit => {
         const dateString = dateYMD(new Date(hit.timestamp));
@@ -93,12 +95,12 @@ export default (state, action) => {
           data.totalReferredHits += 1;
         }
 
-        views[dateString].value += 1;
+        data.views[dateString] += 1;
         data.urls[url]["Total Views"] += 1;
         data.totalHits += 1;
 
         if (hit.site_hit_unique) {
-          uniques[dateString].value += 1;
+          data.uniques[dateString] += 1;
           data.countries[country].Uniques += 1;
           data.devices[hit.device_type].Uniques += 1;
           data.browsers[hit.browser].Uniques += 1;
@@ -111,9 +113,6 @@ export default (state, action) => {
           data.totalPageUniques += 1;
         }
       });
-
-      data.views = Object.values(views);
-      data.uniques = Object.values(uniques);
 
       return {
         ...state,
