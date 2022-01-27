@@ -123,26 +123,55 @@ const RangePicker = () => {
     <div className="rangepicker">
       <div className="rangepicker__picker">
         <div className="rangepicker__buttons">
-          <button onClick={handleTodayClick}>Today</button>
-          <button onClick={handleYesterdayClick}>Yesterday</button>
-          <button onClick={handleLast7DaysClick}>Last 7 days</button>
-          <button onClick={handleLast30DaysClick}>Last 30 days</button>
-          <button onClick={handleLast60DaysClick}>Last 60 days</button>
-          <button onClick={handleLast90DaysClick}>Last 90 days</button>
+          <button className="rangepicker__button" onClick={handleTodayClick}>
+            Today
+          </button>
+          <button
+            className="rangepicker__button"
+            onClick={handleYesterdayClick}
+          >
+            Yesterday
+          </button>
+          <button
+            className="rangepicker__button"
+            onClick={handleLast7DaysClick}
+          >
+            Last 7 days
+          </button>
+          <button
+            className="rangepicker__button"
+            onClick={handleLast30DaysClick}
+          >
+            Last 30 days
+          </button>
+          <button
+            className="rangepicker__button"
+            onClick={handleLast60DaysClick}
+          >
+            Last 60 days
+          </button>
+          <button
+            className="rangepicker__button"
+            onClick={handleLast90DaysClick}
+          >
+            Last 90 days
+          </button>
         </div>
-        <DayPicker
-          className="Selectable"
-          numberOfMonths={2}
-          selectedDays={[state.from, { from: state.from, to: state.to }]}
-          initialMonth={state.to}
-          toMonth={today}
-          modifiers={{
-            disabled: {
-              after: today
-            }
-          }}
-          onDayClick={handleDayClick}
-        />
+        <div className="rangepicker__daypicker">
+          <DayPicker
+            className="Selectable"
+            numberOfMonths={1}
+            selectedDays={[state.from, { from: state.from, to: state.to }]}
+            initialMonth={state.to}
+            toMonth={today}
+            modifiers={{
+              disabled: {
+                after: today
+              }
+            }}
+            onDayClick={handleDayClick}
+          />
+        </div>
       </div>
       <span>
         {state.from &&
