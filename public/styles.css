@@ -209,7 +209,7 @@ body {
 }
 
 .Selectable .DayPicker-Day--disabled {
-	font-size: 0;
+	display: none;
 }
 
 button {
