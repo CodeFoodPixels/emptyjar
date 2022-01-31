@@ -13,6 +13,7 @@ const initialState = {
     from: fromDate,
     to: toDate
   },
+  filters: {},
   data: []
 };
 

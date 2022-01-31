@@ -1,29 +1,28 @@
 const data = require("../data.js");
 
 const urls = [
-  "https://lukeb.co.uk/blog/2022/01/17/pixelated-rounded-corners-with-css-clip-path/",
-  "https://lukeb.co.uk/",
+  "https://lukeb.co.uk/blog/2022/01/17/pixelated-rounded-corners-with-css-clip-path",
   "https://lukeb.co.uk",
-  "https://lukeb.co.uk/blog/",
-  "https://lukeb.co.uk/blog/2021/03/15/no-comment-adding-webmentions-to-my-site/",
-  "https://lukeb.co.uk/speaking/",
-  "https://lukeb.co.uk/blog/2020/05/25/do-i-need-bunting-today/",
-  "https://lukeb.co.uk/blog/2021/05/12/per-aspera-ad-astra/",
-  "https://lukeb.co.uk/blog/2021/03/03/today-i-was-vaccinated-for-covid/",
-  "https://lukeb.co.uk/blog/2020/04/09/css-naked-day-2020/",
-  "https://lukeb.co.uk/blog/2020/02/01/the-viewbuilder-pattern/",
-  "https://lukeb.co.uk/blog/page/2/",
-  "https://lukeb.co.uk/blog/2019/11/11/building-the-new-leedsjs-website/",
-  "https://lukeb.co.uk/blog/2021/02/12/now-with-added-eleventy/"
+  "https://lukeb.co.uk/blog",
+  "https://lukeb.co.uk/blog/2021/03/15/no-comment-adding-webmentions-to-my-site",
+  "https://lukeb.co.uk/speaking",
+  "https://lukeb.co.uk/blog/2020/05/25/do-i-need-bunting-today",
+  "https://lukeb.co.uk/blog/2021/05/12/per-aspera-ad-astra",
+  "https://lukeb.co.uk/blog/2021/03/03/today-i-was-vaccinated-for-covid",
+  "https://lukeb.co.uk/blog/2020/04/09/css-naked-day-2020",
+  "https://lukeb.co.uk/blog/2020/02/01/the-viewbuilder-pattern",
+  "https://lukeb.co.uk/blog/page/2",
+  "https://lukeb.co.uk/blog/2019/11/11/building-the-new-leedsjs-website",
+  "https://lukeb.co.uk/blog/2021/02/12/now-with-added-eleventy"
 ];
 
 const referrers = [
-  "https://t.co/",
-  "https://www.reddit.com/",
-  "https://out.reddit.com/",
   "https://t.co",
-  "https://old.reddit.com/",
-  "https://reddit.com/"
+  "https://www.reddit.com",
+  "https://out.reddit.com",
+  "https://t.co",
+  "https://old.reddit.com",
+  "https://reddit.com"
 ];
 
 const browsers = [

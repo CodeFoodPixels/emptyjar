@@ -3,11 +3,13 @@ import Header from "./Header";
 import Charts from "./Charts";
 import InfoBar from "./InfoBar";
 import RangePicker from "./RangePicker";
+import Filters from "./Filters";
+import { getCountryCode } from "../helpers";
 import { StateContext } from "../context";
 
 const App = () => {
   const {
-    state: { queryDates },
+    state: { queryDates, filters },
     dispatch
   } = useContext(StateContext);
 
@@ -15,12 +17,18 @@ const App = () => {
     const fetchData = async () => {
       const queryData = {
         to: queryDates.to.toISOString(),
-        from: queryDates.from.toISOString()
+        from: queryDates.from.toISOString(),
+        ...filters
       };
 
+      if (queryData.country && queryData.country !== "Unknown") {
+        queryData.country = getCountryCode(queryData.country);
+      }
       const query = Object.keys(queryData)
+        .filter(key => queryData[key])
         .map(
-          k => encodeURIComponent(k) + "=" + encodeURIComponent(queryData[k])
+          key =>
+            encodeURIComponent(key) + "=" + encodeURIComponent(queryData[key])
         )
         .join("&");
 
@@ -35,7 +43,7 @@ const App = () => {
     };
 
     fetchData();
-  }, [queryDates]);
+  }, [queryDates, filters]);
 
   return (
     <>
@@ -44,6 +52,7 @@ const App = () => {
         <InfoBar />
         <RangePicker />
       </div>
+      <Filters />
       <Charts />
       <footer className="footer">
         Privacy first analytics powered by{"  "}

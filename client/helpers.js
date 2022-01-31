@@ -1,3 +1,19 @@
+import { overwrite, getName, getCode } from "country-list";
+
+overwrite([
+  {
+    code: "US",
+    name: "United States"
+  },
+  {
+    code: "GB",
+    name: "United Kingdom"
+  }
+]);
+
+export const getCountryName = getName;
+export const getCountryCode = getCode;
+
 export const throttle = (callback, time) => {
   let timeout;
   let args;

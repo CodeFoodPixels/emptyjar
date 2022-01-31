@@ -6,7 +6,8 @@ const Table = ({
   data,
   title,
   limit = 10,
-  showPercentage = false
+  showPercentage = false,
+  filter
 }) => {
   if (!data) {
     return null;
@@ -34,7 +35,9 @@ const Table = ({
         className="charts__table-row"
         style={{ "--charts__table-row-bar-width": `${percentage}%` }}
       >
-        <td className="charts__table-cell">{key}</td>
+        <td className="charts__table-cell" onClick={filter(key)}>
+          {key}
+        </td>
         {columns}
         {showPercentage ? (
           <td className="charts__table-cell">{percentage}%</td>

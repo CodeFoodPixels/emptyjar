@@ -11,6 +11,16 @@ const port = process.env.PORT || 8080;
 
 const server = http.createServer();
 
+function removeTrailingSlashes(str) {
+  if (typeof str !== "string") {
+    return str;
+  }
+
+  let i = str.length;
+  while (str[--i] === "/");
+  return str.slice(0, i + 1);
+}
+
 server.on("request", (req, res) => {
   const reqUrl = new URL(getRequestURL(req));
 
@@ -117,6 +127,9 @@ async function processHit(hit) {
     const geo = geoip.lookup(hit.ip);
 
     let country = "Unknown";
+
+    hit.url = removeTrailingSlashes(hit.url);
+    hit.referrer = removeTrailingSlashes(hit.referrer);
 
     if (geo && geo.country) {
       country = geo.country;

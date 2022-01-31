@@ -23,6 +23,13 @@ const Charts = ({}) => {
     },
     dispatch
   } = useContext(StateContext);
+
+  const tableFilter = key => value => () =>
+    dispatch({
+      type: "UPDATE_FILTERS",
+      key,
+      value
+    });
   const barData = {
     labels: dates,
     data: []
@@ -53,6 +60,7 @@ const Charts = ({}) => {
           total={totalHits}
           columnName="URL"
           data={urls}
+          filter={tableFilter("url")}
         />
       </div>
       <div className="charts__row">
@@ -61,6 +69,7 @@ const Charts = ({}) => {
           total={totalReferredHits}
           columnName="Referrer URL"
           data={referrers}
+          filter={tableFilter("referrer")}
         />
       </div>
       <div className="charts__row">
@@ -71,6 +80,7 @@ const Charts = ({}) => {
           columnName="Device Type"
           data={devices}
           showPercentage
+          filter={tableFilter("device_type")}
         />
         <Table
           title="Hits by operating system"
@@ -79,6 +89,7 @@ const Charts = ({}) => {
           columnName="Operating System"
           data={operatingSystems}
           showPercentage
+          filter={tableFilter("operating_system")}
         />
       </div>
       <div className="charts__row">
@@ -89,6 +100,7 @@ const Charts = ({}) => {
           columnName="Browser"
           data={browsers}
           showPercentage
+          filter={tableFilter("browser")}
         />
         <Table
           title="Hits by country"
@@ -97,6 +109,7 @@ const Charts = ({}) => {
           columnName="Country"
           data={countries}
           showPercentage
+          filter={tableFilter("country")}
         />
       </div>
     </>

@@ -1,22 +1,4 @@
-import { overwrite, getName } from "country-list";
-import { dateYMD } from "./helpers";
-
-overwrite([
-  {
-    code: "US",
-    name: "United States"
-  },
-  {
-    code: "GB",
-    name: "United Kingdom"
-  }
-]);
-
-function removeTrailingSlashes(str) {
-  let i = str.length;
-  while (str[--i] === "/");
-  return str.slice(0, i + 1);
-}
+import { dateYMD, getCountryName } from "./helpers";
 
 export default (state, action) => {
   switch (action.type) {
@@ -24,6 +6,22 @@ export default (state, action) => {
       return {
         ...state,
         queryDates: action.queryDates
+      };
+    case "UPDATE_FILTERS":
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          [action.key]: action.value
+        }
+      };
+    case "REMOVE_FILTER":
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          [action.key]: undefined
+        }
       };
     case "UPDATE_DATA":
       const oneDay = 86400000;
@@ -59,10 +57,10 @@ export default (state, action) => {
 
       action.data.forEach(hit => {
         const dateString = dateYMD(new Date(hit.timestamp));
-        const url = removeTrailingSlashes(hit.url);
-        const referrer = removeTrailingSlashes(hit.referrer);
+        const url = hit.url;
+        const referrer = hit.referrer;
 
-        let country = getName(hit.country);
+        let country = getCountryName(hit.country);
         country = country ? country : "Unknown";
 
         if (!data.countries[country]) {
