@@ -129,7 +129,7 @@ async function processHit(hit) {
     let country = "Unknown";
 
     hit.url = removeTrailingSlashes(hit.url);
-    hit.referrer = removeTrailingSlashes(hit.referrer);
+    hit.r = removeTrailingSlashes(hit.r) || "";
 
     if (geo && geo.country) {
       country = geo.country;
@@ -143,7 +143,7 @@ async function processHit(hit) {
       .getUTCDate()
       .toString()
       .padStart(2, "0");
-    const pageHitData = `${year}${month}${day}${parsedURL.host}/${parsedURL.pathname}${hit.ip}${hit.ua}`;
+    const pageHitData = `${year}${month}${day}${parsedURL.host}/${parsedURL.pathname}${hit.ip}${hit.ua}${hit.r}`;
     const siteHitData = `${year}${month}${day}${parsedURL.host}${hit.ip}${hit.ua}`;
     const pageHitSignature = crypto
       .createHash("sha256")
