@@ -27,7 +27,11 @@ const RangePicker = () => {
       queryDates
     });
 
-  function handleDayClick(day) {
+  function handleDayClick(day, modifiers = {}) {
+    if (modifiers.disabled) {
+      return;
+    }
+
     const newState = {};
 
     if (state.selectedBothDates) {
@@ -160,7 +164,7 @@ const RangePicker = () => {
         <div className="rangepicker__daypicker">
           <DayPicker
             className="Selectable"
-            numberOfMonths={1}
+            numberOfMonths={2}
             selectedDays={[state.from, { from: state.from, to: state.to }]}
             initialMonth={state.to}
             toMonth={today}
