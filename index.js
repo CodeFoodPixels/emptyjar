@@ -6,8 +6,9 @@ const bowser = require("bowser");
 const geoip = require("geoip-country");
 const data = require("./data.js");
 const urlChecker = require("./urlChecker.js");
+const config = require("./config");
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || config.port;
 
 const server = http.createServer();
 

@@ -3,7 +3,8 @@ const defaultConfig = {
   storageDriver: "sqlite",
   storageOptions: {
     location: ".data/hits.db"
-  }
+  },
+  port: 8080
 };
 
 const config = {
