@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Table = ({
   columnName,
@@ -16,6 +16,10 @@ const Table = ({
   const [paginationData, setPaginationData] = useState({
     start: 0
   });
+
+  useEffect(() => {
+    setPaginationData({ start: 0 });
+  }, [data]);
 
   function buildRow(key) {
     const dataKeys = Object.keys(data[key]);
