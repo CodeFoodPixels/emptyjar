@@ -7,7 +7,8 @@ const Table = ({
   title,
   limit = 10,
   showPercentage = false,
-  filter
+  filter,
+  linkContents = false
 }) => {
   if (!data) {
     return null;
@@ -40,7 +41,17 @@ const Table = ({
         style={{ "--charts__table-row-bar-width": `${percentage}%` }}
       >
         <td className="charts__table-cell" onClick={filter(key)}>
-          {key}
+          {key}{" "}
+          {linkContents ? (
+            <a
+              href={key}
+              target="_blank"
+              rel="external noopener noreferrer"
+              onClick={e => e.stopPropagation()}
+            >
+              [Open in new tab]
+            </a>
+          ) : null}
         </td>
         {columns}
         {showPercentage ? (

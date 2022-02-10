@@ -71,6 +71,7 @@ const Charts = ({}) => {
           columnName="URL"
           data={urls}
           filter={tableFilter("url")}
+          linkContents
         />
       </div>
       <div className="charts__row">
@@ -80,6 +81,7 @@ const Charts = ({}) => {
           columnName="Referrer URL"
           data={referrers}
           filter={tableFilter("referrer")}
+          linkContents
         />
       </div>
       <div className="charts__row">
