@@ -17,8 +17,14 @@ ChartJS.defaults.font.size = parseInt(body.fontSize, 10);
 ChartJS.defaults.color = body.color;
 
 const colors = [
-  stylesheet.getPropertyValue("--primary-color"),
-  stylesheet.getPropertyValue("--secondary-color")
+  {
+    base: stylesheet.getPropertyValue("--primary-color"),
+    hover: stylesheet.getPropertyValue("--primary-color--hover")
+  },
+  {
+    base: stylesheet.getPropertyValue("--secondary-color"),
+    hover: stylesheet.getPropertyValue("--secondary-color--hover")
+  }
 ];
 
 const BarChart = ({ data: { labels, data }, title, maxWidth = 450 }) => {
@@ -42,7 +48,9 @@ const BarChart = ({ data: { labels, data }, title, maxWidth = 450 }) => {
         label: series.name,
         data: series.values,
         backgroundColor:
-          i > colors.length ? colors[colors.length - 1] : colors[i]
+          i > colors.length ? colors[colors.length - 1].base : colors[i].base,
+        hoverBackgroundColor:
+          i > colors.length ? colors[colors.length - 1].hover : colors[i].hover
       };
     })
   };

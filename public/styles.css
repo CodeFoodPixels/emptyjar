@@ -2,6 +2,7 @@
   --primary-color: hsl(9, 100%, 64%);
   --primary-color--hover: hsl(9, 100%, 74%);
   --secondary-color: hsl(197, 78%, 64%);
+  --secondary-color--hover: hsl(197, 78%, 74%);
   --background-light: hsl(18, 22%, 91%);
   --background-dark: hsl(72, 10%, 20%);
 }
