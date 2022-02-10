@@ -23,6 +23,11 @@ export default (state, action) => {
           [action.key]: undefined
         }
       };
+    case "CLEAR_FILTERS":
+      return {
+        ...state,
+        filters: {}
+      };
     case "UPDATE_DATA":
       const oneDay = 86400000;
       const days = Math.round(

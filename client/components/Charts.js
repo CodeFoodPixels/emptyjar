@@ -19,17 +19,27 @@ const Charts = ({}) => {
         totalReferredHits,
         totalUniques,
         countries
-      }
+      },
+      filters
     },
     dispatch
   } = useContext(StateContext);
 
-  const tableFilter = key => value => () =>
+  const tableFilter = key => value => () => {
+    if (filters[key]) {
+      return dispatch({
+        type: "REMOVE_FILTER",
+        key
+      });
+    }
+
     dispatch({
       type: "UPDATE_FILTERS",
       key,
       value
     });
+  };
+
   const barData = {
     labels: dates,
     data: []

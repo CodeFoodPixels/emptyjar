@@ -22,6 +22,11 @@ const Filters = () => {
       key
     });
 
+  const clearFilters = key => () =>
+    dispatch({
+      type: "CLEAR_FILTERS"
+    });
+
   const filterElements = Object.keys(filters)
     .filter(key => filters[key])
     .map(key => (
@@ -44,6 +49,9 @@ const Filters = () => {
       <div className="filters__content">
         <h2 className="charts__title">Filters</h2>
         <div className="filters__filters">{filterElements}</div>
+        <button type="button" onClick={clearFilters()} key={"clear"}>
+          Clear Filters
+        </button>
       </div>
     </div>
   ) : null;
