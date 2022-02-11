@@ -89,15 +89,18 @@ body {
 }
 
 .footer {
-  background: var(--background-light);
+  min-width: 20rem;
+	max-width: 62.5rem;
+	width: 100%;
+}
+
+.footer__content {
+	background: var(--background-light);
   padding: 0.5rem;
   margin: 0.25rem;
   border-radius: 0.25rem;
   box-sizing: border-box;
   text-align: center;
-  min-width: 20rem;
-  width: calc(100% - 0.5rem);
-  max-width: 62.5rem;
 }
 
 .infobar__stat {

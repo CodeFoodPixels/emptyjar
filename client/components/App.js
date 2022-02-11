@@ -65,14 +65,16 @@ const App = () => {
       <Filters />
       <Charts />
       <footer className="footer">
-        Privacy first analytics powered by{"  "}
-        <a
-          href="https://github.com/CodeFoodPixels/emptyjar/"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          EmptyJar
-        </a>
+        <div className="footer__content">
+          Privacy first analytics powered by{"  "}
+          <a
+            href="https://github.com/CodeFoodPixels/emptyjar/"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            EmptyJar
+          </a>
+        </div>
       </footer>
     </>
   );
