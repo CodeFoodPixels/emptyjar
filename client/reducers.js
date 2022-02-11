@@ -2,6 +2,17 @@ import { dateYMD, getCountryName } from "./helpers";
 
 export default (state, action) => {
   switch (action.type) {
+    case "URL_PARAMS":
+      return {
+        ...state,
+        queryDates: {
+          ...state.queryDates,
+          ...action.data.queryDates
+        },
+        filters: {
+          ...action.data.filters
+        }
+      };
     case "UPDATE_QUERYDATES":
       return {
         ...state,

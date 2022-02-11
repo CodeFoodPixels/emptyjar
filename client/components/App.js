@@ -4,7 +4,7 @@ import Charts from "./Charts";
 import InfoBar from "./InfoBar";
 import RangePicker from "./RangePicker";
 import Filters from "./Filters";
-import { getCountryCode } from "../helpers";
+import { getCountryCode, stateFromUrlParams } from "../helpers";
 import { StateContext } from "../context";
 
 const App = () => {
@@ -14,7 +14,16 @@ const App = () => {
   } = useContext(StateContext);
 
   useEffect(() => {
-    const fetchData = async () => {
+    window.addEventListener("popstate", e => {
+      dispatch({
+        type: "URL_PARAMS",
+        data: stateFromUrlParams(window.location.href)
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    (async () => {
       const queryData = {
         to: queryDates.to.toISOString(),
         from: queryDates.from.toISOString(),
@@ -32,6 +41,9 @@ const App = () => {
         )
         .join("&");
 
+      if (window.location.search !== `?${query}`) {
+        history.pushState({}, "", `?${query}`);
+      }
       const res = await fetch(`/api/hits?${query}`);
 
       const data = await res.json();
@@ -40,9 +52,7 @@ const App = () => {
         type: "UPDATE_DATA",
         data
       });
-    };
-
-    fetchData();
+    })();
   }, [queryDates, filters]);
 
   return (

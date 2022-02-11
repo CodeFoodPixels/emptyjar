@@ -14,6 +14,24 @@ overwrite([
 export const getCountryName = getName;
 export const getCountryCode = getCode;
 
+export const stateFromUrlParams = url => {
+  const { searchParams } = new URL(url);
+  const urlState = {
+    queryDates: {},
+    filters: {}
+  };
+
+  for (let [key, value] of searchParams.entries()) {
+    if (key === "to" || key === "from") {
+      urlState.queryDates[key] = new Date(value);
+    } else {
+      urlState.filters[key] = value;
+    }
+  }
+
+  return urlState;
+};
+
 export const throttle = (callback, time) => {
   let timeout;
   let args;
