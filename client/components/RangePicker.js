@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import DayPicker, { DateUtils } from "react-day-picker";
 import "react-day-picker/lib/style.css";
 import { dateYMD } from "../helpers";
@@ -20,6 +20,14 @@ const RangePicker = () => {
     to,
     selectedBothDates: true
   });
+
+  useEffect(() => {
+    setState({
+      ...state,
+      to,
+      from
+    });
+  }, [to, from]);
 
   const updateQueryDates = queryDates =>
     dispatch({
@@ -166,7 +174,7 @@ const RangePicker = () => {
             className="Selectable"
             numberOfMonths={2}
             selectedDays={[state.from, { from: state.from, to: state.to }]}
-            initialMonth={state.to}
+            month={to}
             toMonth={today}
             modifiers={{
               disabled: {

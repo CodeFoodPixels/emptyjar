@@ -40,6 +40,20 @@ const Charts = ({}) => {
     });
   };
 
+  const barDateFilter = date => {
+    const newDates = {
+      to: new Date(date),
+      from: new Date(date)
+    };
+
+    newDates.from.setUTCHours(0, 0, 0, 0);
+    newDates.to.setUTCHours(23, 59, 59, 999);
+    dispatch({
+      type: "UPDATE_QUERYDATES",
+      queryDates: newDates
+    });
+  };
+
   const barData = {
     labels: dates,
     data: []
@@ -62,7 +76,7 @@ const Charts = ({}) => {
   return (
     <>
       <div className="charts__row">
-        <Bar data={barData} title="Total hits" maxWidth={970} />
+        <Bar data={barData} title="Total hits" filter={barDateFilter} />
       </div>
       <div className="charts__row">
         <Table
