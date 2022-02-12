@@ -113,7 +113,11 @@ export default (state, action) => {
         data.urls[url]["Total Views"] += 1;
         data.totalHits += 1;
 
-        if (hit.site_hit_unique) {
+        if (
+          hit.site_hit_unique ||
+          (state.filters.url && hit.page_hit_unique) ||
+          (state.filters.referrer && hit.page_hit_unique)
+        ) {
           data.uniques[dateString] += 1;
           data.countries[country].Uniques += 1;
           data.devices[hit.device_type].Uniques += 1;
