@@ -51,35 +51,37 @@ function getRandom(max) {
   return Math.floor(Math.random() * max);
 }
 
-for (let i = 0; i < 100; i++) {
-  const hits = getRandom(2000);
-  const timestamp = new Date(today - 86400000 * i);
+setTimeout(async () => {
+  for (let i = 0; i < 100; i++) {
+    const hits = getRandom(2000);
+    const timestamp = new Date(today - 86400000 * i);
 
-  for (let h = 0; h < hits; h++) {
-    const browser = browsers[getRandom(browsers.length)];
-    const operating_system =
-      operatingSystems[getRandom(operatingSystems.length)];
-    const device_type = devices[getRandom(devices.length)];
-    const country = countries[getRandom(countries.length)];
+    for (let h = 0; h < hits; h++) {
+      const browser = browsers[getRandom(browsers.length)];
+      const operating_system =
+        operatingSystems[getRandom(operatingSystems.length)];
+      const device_type = devices[getRandom(devices.length)];
+      const country = countries[getRandom(countries.length)];
 
-    data.logHit({
-      url: urls[getRandom(urls.length)],
-      referrer: getRandom(2) ? "" : referrers[getRandom(referrers.length)],
-      browser,
-      operating_system,
-      device_type,
-      country,
-      page_hit_unique: !!getRandom(5),
-      site_hit_unique: !!getRandom(5),
-      timestamp
-    });
+      await data.logHit({
+        url: urls[getRandom(urls.length)],
+        referrer: getRandom(2) ? "" : referrers[getRandom(referrers.length)],
+        browser,
+        operating_system,
+        device_type,
+        country,
+        page_hit_unique: !!getRandom(5),
+        site_hit_unique: !!getRandom(5),
+        timestamp
+      });
 
-    console.log({
-      browser,
-      operating_system,
-      device_type,
-      country,
-      timestamp
-    });
+      console.log({
+        browser,
+        operating_system,
+        device_type,
+        country,
+        timestamp
+      });
+    }
   }
-}
+}, 1000);

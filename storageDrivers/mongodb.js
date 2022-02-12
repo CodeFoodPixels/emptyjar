@@ -55,6 +55,10 @@ module.exports = class sqlite {
           return queryParams.push({ [param.key]: { $gte: param.value } });
         }
 
+        if (Array.isArray(param.value)) {
+          return queryParams.push({ [param.key]: { $in: param.value } });
+        }
+
         if (param.strictEquality) {
           return queryParams.push({ [param.key]: param.value });
         }
