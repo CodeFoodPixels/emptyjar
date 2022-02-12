@@ -197,28 +197,28 @@ function hits(req, res) {
 
   const params = {};
 
-  if (req.query.get("url")) {
-    params.url = req.query.get("url");
+  if (req.query.getAll("url").length > 0) {
+    params.url = req.query.getAll("url");
   }
 
-  if (req.query.get("referrer")) {
-    params.referrer = req.query.get("referrer");
+  if (req.query.getAll("referrer").length > 0) {
+    params.referrer = req.query.getAll("referrer");
   }
 
-  if (req.query.get("operating_system")) {
-    params.operating_system = req.query.get("operating_system");
+  if (req.query.getAll("operating_system").length > 0) {
+    params.operating_system = req.query.getAll("operating_system");
   }
 
-  if (req.query.get("browser")) {
-    params.browser = req.query.get("browser");
+  if (req.query.getAll("browser").length > 0) {
+    params.browser = req.query.getAll("browser");
   }
 
-  if (req.query.get("device_type")) {
-    params.device_type = req.query.get("device_type");
+  if (req.query.getAll("device_type").length > 0) {
+    params.device_type = req.query.getAll("device_type");
   }
 
-  if (req.query.get("country")) {
-    params.country = req.query.get("country");
+  if (req.query.getAll("country").length > 0) {
+    params.country = req.query.getAll("country");
   }
 
   if (req.query.get("page_hit_unique")) {
@@ -237,10 +237,6 @@ function hits(req, res) {
 
   if (req.query.get("to")) {
     params.to = req.query.get("to");
-  }
-
-  if (req.query.get("country")) {
-    params.country = req.query.get("country");
   }
 
   data.getHits(params).then(data => {

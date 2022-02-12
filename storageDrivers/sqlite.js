@@ -80,11 +80,12 @@ module.exports = class sqlite {
 
   find(table, params) {
     let query = `SELECT * from ${table}`;
+    const paramValues = [];
 
     if (params.length > 0) {
       const queryParams = [];
 
-      params.forEach(param => {
+      const processParam = param => {
         let operator = "LIKE";
 
         if (param.operator) {
@@ -103,13 +104,28 @@ module.exports = class sqlite {
           param.value = Math.floor(param.value.getTime() / 1000);
         }
 
-        queryParams.push(`${param.key} ${operator} ?`);
+        paramValues.push(param.value);
+
+        return `${param.key} ${operator} ?`;
+      };
+
+      params.forEach(param => {
+        if (Array.isArray(param.value)) {
+          const subParams = [];
+          param.value.forEach(paramItem => {
+            subParams.push(processParam({ ...param, value: paramItem }));
+          });
+
+          return queryParams.push(`(${subParams.join(" OR ")})`);
+        }
+
+        queryParams.push(processParam(param));
       });
 
       query = `${query} WHERE ${queryParams.join(" AND ")}`;
     }
 
-    const paramValues = params.map(param => param.value);
+    params.map(param => param.value);
 
     return new Promise((resolve, reject) => {
       this.db.all(query, paramValues, function(err, rows) {
