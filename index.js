@@ -130,7 +130,23 @@ async function processHit(hit) {
     let country = "Unknown";
 
     hit.url = removeTrailingSlashes(hit.url);
-    hit.r = removeTrailingSlashes(hit.r) || "";
+    if (hit.r) {
+      try {
+        const referrer = new URL(hit.r);
+
+        if (referrer.origin && referrer.origin !== "null") {
+          hit.r = referrer.host;
+        } else if (referrer.protocol === "android-app:") {
+          hit.r = referrer.href;
+        } else {
+          hit.r = "";
+        }
+      } catch (e) {
+        hit.r = "";
+      }
+    } else {
+      hit.r = "";
+    }
 
     if (geo && geo.country) {
       country = geo.country;

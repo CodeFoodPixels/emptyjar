@@ -6,6 +6,7 @@ import RangePicker from "./RangePicker";
 import Filters from "./Filters";
 import { getCountryCode, stateFromUrlParams } from "../helpers";
 import { StateContext } from "../context";
+import { mapNameToURLs } from "../referrerMap";
 
 const App = () => {
   const {
@@ -33,18 +34,46 @@ const App = () => {
       if (queryData.country && queryData.country !== "Unknown") {
         queryData.country = getCountryCode(queryData.country);
       }
-      const query = Object.keys(queryData)
-        .filter(key => queryData[key])
+      const queryKeys = Object.keys(queryData).filter(key => queryData[key]);
+
+      const windowQuery = queryKeys
         .map(
           key =>
             encodeURIComponent(key) + "=" + encodeURIComponent(queryData[key])
         )
         .join("&");
 
-      if (window.location.search !== `?${query}`) {
-        history.pushState({}, "", `?${query}`);
+      const apiQuery = queryKeys
+        .reduce((data, key) => {
+          if (key === "referrer") {
+            const urls = mapNameToURLs(queryData[key]);
+
+            if (Array.isArray(urls)) {
+              urls.forEach(url => {
+                data.push(
+                  encodeURIComponent(key) + "=" + encodeURIComponent(url)
+                );
+              });
+            } else {
+              data.push(
+                encodeURIComponent(key) +
+                  "=" +
+                  encodeURIComponent(queryData[key])
+              );
+            }
+          } else {
+            data.push(
+              encodeURIComponent(key) + "=" + encodeURIComponent(queryData[key])
+            );
+          }
+          return data;
+        }, [])
+        .join("&");
+
+      if (window.location.search !== `?${windowQuery}`) {
+        history.pushState({}, "", `?${windowQuery}`);
       }
-      const res = await fetch(`/api/hits?${query}`);
+      const res = await fetch(`/api/hits?${apiQuery}`);
 
       const data = await res.json();
 

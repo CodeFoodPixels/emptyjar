@@ -3,10 +3,11 @@ const storage = require("./storage");
 storage.init();
 
 module.exports = {
+  storage,
   logHit(data) {
     const hitData = {
       timestamp: new Date(),
-			...data
+      ...data
     };
 
     return storage.insertOne("hits", hitData);
@@ -50,7 +51,7 @@ module.exports = {
       });
   },
 
-  getHits(params) {
+  getHits(params = {}) {
     const queryParams = [];
 
     if (params.url) {
@@ -61,9 +62,18 @@ module.exports = {
     }
 
     if (params.referrer) {
+      if (Array.isArray(params.referrer)) {
+        params.referrer = params.referrer.reduce((referrers, value) => {
+          return [...referrers, `*.${value}`, `${value}`];
+        }, []);
+      } else {
+        params.referrer = [`*.${params.referrer}`, `${params.referrer}`];
+      }
       queryParams.push({
         key: "referrer",
-        value: params.referrer
+        value: params.referrer,
+        wildcardMatch: true,
+        wildcardCharacter: "*"
       });
     }
 

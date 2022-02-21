@@ -1,4 +1,5 @@
 import { dateYMD, getCountryName } from "./helpers";
+import { mapURLToName } from "./referrerMap";
 
 export default (state, action) => {
   switch (action.type) {
@@ -74,7 +75,7 @@ export default (state, action) => {
       action.data.forEach(hit => {
         const dateString = dateYMD(new Date(hit.timestamp));
         const url = hit.url;
-        const referrer = hit.referrer;
+        const referrer = mapURLToName(hit.referrer);
 
         let country = getCountryName(hit.country);
         country = country ? country : "Unknown";

@@ -56,7 +56,22 @@ module.exports = class sqlite {
         }
 
         if (Array.isArray(param.value)) {
+          if (param.wildcardMatch) {
+            param.value = param.value.map(value => {
+              return new RegExp(value.replace(param.wildcardCharacter, ".*"));
+            });
+          }
           return queryParams.push({ [param.key]: { $in: param.value } });
+        }
+
+        if (param.wildcardMatch) {
+          return queryParams.push({
+            [param.key]: {
+              $regex: new RegExp(
+                param.value.replace(param.wildcardCharacter, ".*")
+              )
+            }
+          });
         }
 
         if (param.strictEquality) {

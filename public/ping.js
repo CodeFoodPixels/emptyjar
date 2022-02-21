@@ -4,9 +4,21 @@
 
   function trackHit() {
     const data = {
-      r: document.referrer,
-      url: window.location.href
+      url: window.location.href,
+      r: ""
     };
+
+    if (document.referrer) {
+      try {
+        const referrer = new URL(document.referrer);
+
+        if (referrer.origin && referrer.origin !== "null") {
+          data.r = referrer.origin;
+        } else if (referrer.protocol === "android-app:") {
+          data.r = referrer.href;
+        }
+      } catch (e) {}
+    }
 
     if (navigator.sendBeacon) {
       navigator.sendBeacon(analyticsUrl + "/beacon", JSON.stringify(data));
