@@ -95,7 +95,6 @@ const Charts = ({}) => {
           columnName="Referrer URL"
           data={referrers}
           filter={tableFilter("referrer")}
-          linkContents
         />
       </div>
       <div className="charts__row">
