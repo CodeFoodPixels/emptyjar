@@ -14,7 +14,7 @@ const config = {
 
 function loadConfig() {
   try {
-    const config = require("./config.json");
+    const config = require("../config.json");
     if (
       (typeof config === "object" || typeof config === "function") &&
       config !== null

@@ -15,7 +15,7 @@ module.exports = class sqlite {
 
   async init() {
     return new Promise((resolve, reject) => {
-      const dbFile = path.join(__dirname, "..", this.options.location);
+      const dbFile = path.join(__dirname, "..", "..", this.options.location);
       const dbFileExists = fs.existsSync(dbFile);
 
       this.db = new sqlite3.Database(dbFile);

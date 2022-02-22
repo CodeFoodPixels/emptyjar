@@ -60,7 +60,7 @@ typings/
 # next.js build output
 .next
 
-.data/hits.db
+.data/*
 
 build/
 config.json
