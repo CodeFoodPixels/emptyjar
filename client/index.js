@@ -4,9 +4,10 @@ import App from "./components/App.js";
 import reducers from "./reducers";
 import { StateProvider } from "./context.js";
 import { stateFromUrlParams } from "./helpers.js";
+import { ONE_DAY } from "./constants.js";
 
 const urlParams = stateFromUrlParams(window.location.href);
-const fromDate = new Date(Date.now() - 86400000 * 6);
+const fromDate = new Date(Date.now() - ONE_DAY * 6);
 fromDate.setHours(0, 0, 0, 0);
 const toDate = new Date();
 toDate.setHours(23, 59, 59, 999);

@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { CLEAR_FILTERS, REMOVE_FILTER } from "../constants";
 import { StateContext } from "../context";
 
 const displayNames = {
@@ -18,13 +19,13 @@ const Filters = () => {
 
   const removeFilter = key => () =>
     dispatch({
-      type: "REMOVE_FILTER",
+      type: REMOVE_FILTER,
       key
     });
 
   const clearFilters = key => () =>
     dispatch({
-      type: "CLEAR_FILTERS"
+      type: CLEAR_FILTERS
     });
 
   const filterElements = Object.keys(filters)

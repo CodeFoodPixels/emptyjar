@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Bar from "./Charts/Bar";
 import Table from "./Charts/Table";
 import { StateContext } from "../context";
+import { REMOVE_FILTER, UPDATE_FILTERS, UPDATE_QUERYDATES } from "../constants";
 
 const Charts = ({}) => {
   const {
@@ -29,13 +30,13 @@ const Charts = ({}) => {
   const tableFilter = key => value => () => {
     if (filters[key]) {
       return dispatch({
-        type: "REMOVE_FILTER",
+        type: REMOVE_FILTER,
         key
       });
     }
 
     dispatch({
-      type: "UPDATE_FILTERS",
+      type: UPDATE_FILTERS,
       key,
       value
     });
@@ -50,7 +51,7 @@ const Charts = ({}) => {
     newDates.from.setUTCHours(0, 0, 0, 0);
     newDates.to.setUTCHours(23, 59, 59, 999);
     dispatch({
-      type: "UPDATE_QUERYDATES",
+      type: UPDATE_QUERYDATES,
       queryDates: newDates
     });
   };

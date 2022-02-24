@@ -3,8 +3,7 @@ import DayPicker, { DateUtils } from "react-day-picker";
 import "react-day-picker/lib/style.css";
 import { dateYMD } from "../helpers";
 import { StateContext } from "../context";
-
-const oneDay = 86400000;
+import { ONE_DAY, UPDATE_QUERYDATES } from "../constants";
 
 const RangePicker = () => {
   const {
@@ -31,7 +30,7 @@ const RangePicker = () => {
 
   const updateQueryDates = queryDates =>
     dispatch({
-      type: "UPDATE_QUERYDATES",
+      type: UPDATE_QUERYDATES,
       queryDates
     });
 
@@ -98,35 +97,35 @@ const RangePicker = () => {
 
   function handleYesterdayClick() {
     setNewDates({
-      from: new Date(Date.now() - oneDay),
-      to: new Date(Date.now() - oneDay)
+      from: new Date(Date.now() - ONE_DAY),
+      to: new Date(Date.now() - ONE_DAY)
     });
   }
 
   function handleLast7DaysClick() {
     setNewDates({
-      from: new Date(Date.now() - oneDay * 6),
+      from: new Date(Date.now() - ONE_DAY * 6),
       to: new Date(Date.now())
     });
   }
 
   function handleLast30DaysClick() {
     setNewDates({
-      from: new Date(Date.now() - oneDay * 29),
+      from: new Date(Date.now() - ONE_DAY * 29),
       to: new Date(Date.now())
     });
   }
 
   function handleLast60DaysClick() {
     setNewDates({
-      from: new Date(Date.now() - oneDay * 59),
+      from: new Date(Date.now() - ONE_DAY * 59),
       to: new Date(Date.now())
     });
   }
 
   function handleLast90DaysClick() {
     setNewDates({
-      from: new Date(Date.now() - oneDay * 89),
+      from: new Date(Date.now() - ONE_DAY * 89),
       to: new Date(Date.now())
     });
   }

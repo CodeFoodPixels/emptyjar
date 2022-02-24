@@ -7,6 +7,7 @@ import Filters from "./Filters";
 import { getCountryCode, stateFromUrlParams } from "../helpers";
 import { StateContext } from "../context";
 import { mapNameToURLs } from "../referrerMap";
+import { UPDATE_DATA, UPDATE_LOADING, URL_PARAMS_TO_STATE } from "../constants";
 
 const App = () => {
   const {
@@ -17,7 +18,7 @@ const App = () => {
   useEffect(() => {
     window.addEventListener("popstate", e => {
       dispatch({
-        type: "URL_PARAMS",
+        type: URL_PARAMS_TO_STATE,
         data: stateFromUrlParams(window.location.href)
       });
     });
@@ -32,7 +33,7 @@ const App = () => {
       };
 
       dispatch({
-        type: "UPDATE_LOADING",
+        type: UPDATE_LOADING,
         value: true
       });
 
@@ -83,7 +84,7 @@ const App = () => {
       const data = await res.json();
 
       dispatch({
-        type: "UPDATE_DATA",
+        type: UPDATE_DATA,
         data
       });
     })();
