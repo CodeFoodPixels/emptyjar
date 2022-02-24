@@ -20,7 +20,8 @@ const Charts = ({}) => {
         totalUniques,
         countries
       },
-      filters
+      filters,
+      loading
     },
     dispatch
   } = useContext(StateContext);
@@ -76,65 +77,74 @@ const Charts = ({}) => {
   return (
     <>
       <div className="charts__row">
-        <Bar data={barData} title="Total hits" filter={barDateFilter} />
+        <Bar
+          data={barData}
+          title="Total hits"
+          filter={barDateFilter}
+          loading={loading}
+        />
       </div>
       <div className="charts__row">
         <Table
           title="Hits by URL"
           total={totalHits}
+          limit={10}
           columnName="URL"
           data={urls}
           filter={tableFilter("url")}
           linkContents
+          loading={loading}
         />
       </div>
       <div className="charts__row">
         <Table
           title="Hits by Referrer"
           total={totalReferredHits}
+          limit={10}
           columnName="Referrer URL"
           data={referrers}
           filter={tableFilter("referrer")}
+          loading={loading}
         />
       </div>
       <div className="charts__row">
         <Table
           title="Hits by device type"
           total={totalUniques}
-          limit={5}
           columnName="Device Type"
           data={devices}
           showPercentage
           filter={tableFilter("device_type")}
+          loading={loading}
         />
         <Table
           title="Hits by operating system"
           total={totalUniques}
-          limit={5}
           columnName="Operating System"
           data={operatingSystems}
           showPercentage
           filter={tableFilter("operating_system")}
+          loading={loading}
         />
       </div>
       <div className="charts__row">
         <Table
           title="Hits by browser"
           total={totalUniques}
-          limit={5}
           columnName="Browser"
           data={browsers}
           showPercentage
           filter={tableFilter("browser")}
+          loading={loading}
         />
         <Table
           title="Hits by country"
           total={totalUniques}
-          limit={5}
           columnName="Country"
           data={countries}
           showPercentage
           filter={tableFilter("country")}
+          loading={loading}
         />
       </div>
     </>

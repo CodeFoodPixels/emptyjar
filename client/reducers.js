@@ -40,6 +40,11 @@ export default (state, action) => {
         ...state,
         filters: {}
       };
+    case "UPDATE_LOADING":
+      return {
+        ...state,
+        loading: action.value
+      };
     case "UPDATE_DATA":
       const oneDay = 86400000;
       const days = Math.round(
@@ -135,6 +140,7 @@ export default (state, action) => {
 
       return {
         ...state,
+        loading: false,
         data
       };
   }

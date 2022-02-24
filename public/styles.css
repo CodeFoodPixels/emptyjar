@@ -167,14 +167,29 @@ body {
 
 .charts__chart-wrapper {
   height: 19rem;
+	display: flex;
 }
 
 .charts__title {
   margin-top: 0rem;
 }
 
+.charts__loader {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.charts__table-wrapper {
+	display: flex;
+	min-height: calc(2rem * var(--charts__table-row-count))
+}
+
 .charts__table {
   border-spacing: 0rem;
+	min-height: 100%;
+	flex: 1;
 }
 
 .charts__table-header--key {
@@ -274,16 +289,19 @@ button[disabled]:hover {
 
 .charts__pagination {
   display: flex;
+	height: 2rem;
 }
 
 .charts__pagination-button {
   flex: 0 0 50%;
+	display: flex;
+	align-items: center;
 }
 
 .charts__pagination-button--prev {
-  text-align: left;
+  justify-content: flex-start;
 }
 
 .charts__pagination-button--next {
-  text-align: right;
+  justify-content: flex-end;
 }

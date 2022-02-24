@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,6 +8,7 @@ import {
   Legend
 } from "chart.js";
 import { Bar, getElementAtEvent } from "react-chartjs-2";
+import Loader from "../Loader";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
@@ -27,7 +28,12 @@ const colors = [
   }
 ];
 
-const BarChart = ({ data: { labels, data }, title, filter }) => {
+const BarChart = ({
+  data: { labels, data },
+  title,
+  filter,
+  loading = false
+}) => {
   const chartRef = useRef();
 
   const onClick = e => {
@@ -73,12 +79,16 @@ const BarChart = ({ data: { labels, data }, title, filter }) => {
     <div className="charts__chart">
       <h2 className="charts__title">{title}</h2>
       <div className="charts__chart-wrapper">
-        <Bar
-          ref={chartRef}
-          options={options}
-          data={chartData}
-          onClick={onClick}
-        />
+        {loading ? (
+          <Loader />
+        ) : (
+          <Bar
+            ref={chartRef}
+            options={options}
+            data={chartData}
+            onClick={onClick}
+          />
+        )}
       </div>
     </div>
   );

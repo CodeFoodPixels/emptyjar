@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
+import Loader from "../Loader";
 
 const Table = ({
   columnName,
   total,
   data,
   title,
-  limit = 10,
+  limit = 5,
   showPercentage = false,
   filter,
-  linkContents = false
+  linkContents = false,
+  loading = false
 }) => {
   if (!data) {
     return null;
@@ -111,48 +113,59 @@ const Table = ({
   return (
     <div className="charts__chart">
       <h2 className="charts__title">{title}</h2>
-      <table className="charts__table">
-        <thead>
-          <tr>
-            <th className="charts__table-header charts__table-header--key">
-              {columnName}
-            </th>
-            {buildHeaderColumns()}
-            {showPercentage ? (
-              <th className="charts__table-header">%</th>
-            ) : null}
-          </tr>
-        </thead>
-        <tbody>{buildRows()}</tbody>
-      </table>
-      <div className="charts__pagination">
-        <div className="charts__pagination-button charts__pagination-button--prev">
-          {paginationData.start > 0 ? (
-            <button
-              onClick={() => {
-                setPaginationData({
-                  start: paginationData.start - limit
-                });
-              }}
-            >
-              &laquo; Previous
-            </button>
-          ) : null}
-        </div>
-        <div className="charts__pagination-button charts__pagination-button--next">
-          {paginationData.start + limit < Object.keys(data).length ? (
-            <button
-              onClick={() => {
-                setPaginationData({
-                  start: paginationData.start + limit
-                });
-              }}
-            >
-              Next &raquo;
-            </button>
-          ) : null}
-        </div>
+      <div
+        className="charts__table-wrapper"
+        style={{ "--charts__table-row-count": `${limit}` }}
+      >
+        {loading ? (
+          <Loader />
+        ) : (
+          <table className="charts__table">
+            <thead>
+              <tr>
+                <th className="charts__table-header charts__table-header--key">
+                  {columnName}
+                </th>
+                {buildHeaderColumns()}
+                {showPercentage ? (
+                  <th className="charts__table-header">%</th>
+                ) : null}
+              </tr>
+            </thead>
+            <tbody>{buildRows()}</tbody>
+          </table>
+        )}
       </div>
+      {!loading && Object.keys(data).length >= limit && (
+        <div className="charts__pagination">
+          <div className="charts__pagination-button charts__pagination-button--prev">
+            {paginationData.start > 0 ? (
+              <button
+                onClick={() => {
+                  setPaginationData({
+                    start: paginationData.start - limit
+                  });
+                }}
+              >
+                &laquo; Previous
+              </button>
+            ) : null}
+          </div>
+          <div className="charts__pagination-button charts__pagination-button--next">
+            {paginationData.start + limit < Object.keys(data).length ? (
+              <button
+                onClick={() => {
+                  setPaginationData({
+                    start: paginationData.start + limit
+                  });
+                }}
+              >
+                Next &raquo;
+              </button>
+            ) : null}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

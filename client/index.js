@@ -17,6 +17,7 @@ const initialState = {
     ...urlParams.queryDates
   },
   filters: { ...urlParams.filters },
+  loading: false,
   data: []
 };
 

@@ -31,6 +31,11 @@ const App = () => {
         ...filters
       };
 
+      dispatch({
+        type: "UPDATE_LOADING",
+        value: true
+      });
+
       if (queryData.country && queryData.country !== "Unknown") {
         queryData.country = getCountryCode(queryData.country);
       }
