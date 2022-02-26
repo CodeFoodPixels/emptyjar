@@ -33,16 +33,12 @@ function hits(req, res) {
 
   if (req.requestUrl.searchParams.get("page_hit_unique")) {
     params.page_hit_unique =
-      req.requestUrl.searchParams.get("page_hit_unique") === "true"
-        ? true
-        : false;
+      req.requestUrl.searchParams.get("page_hit_unique") === "true";
   }
 
   if (req.requestUrl.searchParams.get("site_hit_unique")) {
     params.site_hit_unique =
-      req.requestUrl.searchParams.get("site_hit_unique") === "true"
-        ? true
-        : false;
+      req.requestUrl.searchParams.get("site_hit_unique") === "true";
   }
 
   if (req.requestUrl.searchParams.get("from")) {
