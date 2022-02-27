@@ -16,7 +16,7 @@ function getIP(req) {
 }
 
 function ping(req, res) {
-  sendFile(res, path.join("..", "public", "img", "ping.png"));
+  res.sendFile(path.join("..", "public", "img", "ping.png"));
 
   try {
     const data = JSON.parse(
@@ -32,20 +32,13 @@ function ping(req, res) {
 
 function beacon(req, res) {
   res.end();
+  try {
+    const data = JSON.parse(req.body);
 
-  let body = "";
-  req.on("data", chunk => {
-    body += chunk.toString(); // convert Buffer to string
-  });
-  req.on("end", () => {
-    try {
-      const data = JSON.parse(body);
-
-      data.ip = getIP(req);
-      data.ua = req.headers["user-agent"];
-      processHit(data);
-    } catch (e) {}
-  });
+    data.ip = getIP(req);
+    data.ua = req.headers["user-agent"];
+    processHit(data);
+  } catch (e) {}
 }
 
 async function processHit(hit) {

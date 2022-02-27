@@ -12,7 +12,7 @@ const server = http.createServer();
 
 server.on("request", (req, res) => {
   req.requestUrl = new URL(getRequestURL(req));
-
+  req.body = "";
   res.setHeader(
     "Cache-Control",
     "private, no-cache, no-store, must-revalidate"
@@ -27,14 +27,19 @@ server.on("request", (req, res) => {
       ? removeTrailingSlashes(req.requestUrl.pathname)
       : req.requestUrl.pathname;
 
-  if (routes[req.method] && routes[req.method][pathName]) {
-    routes[req.method][pathName](req, res);
-  } else if (routes[req.method] && routes[req.method]["*"]) {
-    routes[req.method]["*"](req, res);
-  } else {
-    res.statusCode = 404;
-    res.end("Not found");
-  }
+  req.on("data", chunk => {
+    req.body += chunk.toString(); // convert Buffer to string
+  });
+  req.on("end", () => {
+    if (routes[req.method] && routes[req.method][pathName]) {
+      routes[req.method][pathName](req, res);
+    } else if (routes[req.method] && routes[req.method]["*"]) {
+      routes[req.method]["*"](req, res);
+    } else {
+      res.statusCode = 404;
+      res.end("Not found");
+    }
+  });
 });
 
 function sendFile(filePath) {
