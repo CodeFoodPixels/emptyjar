@@ -1,3 +1,6 @@
+const uaParser = require("./uaParser");
+const urlChecker = require("./urlChecker");
+
 function removeTrailingSlashes(str) {
   if (typeof str !== "string") {
     return str;
@@ -9,5 +12,7 @@ function removeTrailingSlashes(str) {
 }
 
 module.exports = {
-  removeTrailingSlashes
+  removeTrailingSlashes,
+  uaParser,
+  urlChecker
 };

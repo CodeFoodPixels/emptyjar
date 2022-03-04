@@ -46,7 +46,7 @@ describe("api routes", () => {
         referrer: ""
       }
     ];
-    data.getHits.mockResolvedValue(rows);
+    data.getHits.mockResolvedValueOnce(rows);
     const req = {
       requestUrl: new URL("https://analytics.lukeb.co.uk/api/hits")
     };
@@ -60,7 +60,7 @@ describe("api routes", () => {
 
   test("hits endpoint should return 404 when no data is returned", async () => {
     const rows = [];
-    data.getHits.mockResolvedValue(rows);
+    data.getHits.mockResolvedValueOnce(rows);
     const req = {
       requestUrl: new URL(
         "https://analytics.lukeb.co.uk/api/hits?url=test&referrer=test&operating_system=test&browser=test&device_type=test&country=test&page_hit_unique=false&site_hit_unique=false&from=test&to=test"

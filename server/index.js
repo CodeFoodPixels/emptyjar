@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 
 const config = require("./config");
-const { removeTrailingSlashes } = require("./helpers.js");
+const { removeTrailingSlashes } = require("./utilities");
 const routes = require("./routes");
 
 const port = process.env.PORT || config.port;

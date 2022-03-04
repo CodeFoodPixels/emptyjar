@@ -1,21 +1,19 @@
 const crypto = require("crypto");
 const path = require("path");
-const bowser = require("bowser");
 const geoip = require("geoip-country");
-const urlChecker = require("../urlChecker.js");
-const { removeTrailingSlashes } = require("../helpers.js");
+const { removeTrailingSlashes, uaParser, urlChecker } = require("../utilities");
 const data = require("../data.js");
 
 function getIP(req) {
   return (
     (req.headers["x-forwarded-for"] || "").split(",").shift() ||
-    req.connection.remoteAddress ||
-    req.socket.remoteAddress ||
-    req.connection.socket.remoteAddress
+    req.connection?.remoteAddress ||
+    req.socket?.remoteAddress ||
+    req.connection?.socket?.remoteAddress
   );
 }
 
-function ping(req, res) {
+async function ping(req, res) {
   res.sendFile(path.join("..", "public", "img", "ping.png"));
 
   try {
@@ -23,21 +21,21 @@ function ping(req, res) {
       decodeURIComponent(req.requestUrl.searchParams.get("data"))
     );
 
-    data.ip = getIP(getIP);
+    data.ip = getIP(req);
     data.ua = req.headers["user-agent"];
 
-    processHit(data);
+    await processHit(data);
   } catch (e) {}
 }
 
-function beacon(req, res) {
+async function beacon(req, res) {
   res.end();
   try {
     const data = JSON.parse(req.body);
 
     data.ip = getIP(req);
     data.ua = req.headers["user-agent"];
-    processHit(data);
+    await processHit(data);
   } catch (e) {}
 }
 
@@ -45,11 +43,9 @@ async function processHit(hit) {
   if (hit.url && urlChecker(hit.url)) {
     const hitData = {
       country: "Unknown",
-      referrer: ""
+      referrer: "",
+      ...uaParser(hit.ua)
     };
-
-    const userAgent = bowser.parse(hit.ua);
-    hitData.device_type = userAgent.platform.type || "Unknown";
 
     hitData.url = removeTrailingSlashes(hit.url);
 
@@ -101,19 +97,7 @@ async function processHit(hit) {
       data.logSiteHitSignature(siteHitSignature);
     }
 
-    hitData.browser =
-      `${userAgent.browser.name || ""} ${userAgent.browser.version ||
-        ""}`.trim() || "Unknown";
-
-    const operating_system_version =
-      userAgent.os.name.toLowerCase() === "windows"
-        ? userAgent.os.versionName
-        : userAgent.os.version;
-    hitData.operating_system =
-      `${userAgent.os.name || ""} ${operating_system_version || ""}`.trim() ||
-      "Unknown";
-
-    data.logHit(hitData);
+    return data.logHit(hitData);
   }
 }
 

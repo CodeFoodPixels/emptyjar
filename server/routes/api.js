@@ -49,7 +49,7 @@ function hits(req, res) {
     params.to = req.requestUrl.searchParams.get("to");
   }
 
-  data.getHits(params).then(data => {
+  return data.getHits(params).then(data => {
     let status = 200;
     if (data.length === 0) {
       status = 404;
