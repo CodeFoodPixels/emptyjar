@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { replaceAll } = require("../utilities");
 const sqlite3 = require("sqlite3").verbose();
 
 const typeConversions = {
@@ -13,7 +14,7 @@ module.exports = class sqlite {
     this.options = options;
   }
 
-  async init() {
+  init() {
     return new Promise((resolve, reject) => {
       const dbFile = path.join(__dirname, "..", "..", this.options.location);
       const dbFileExists = fs.existsSync(dbFile);
@@ -78,7 +79,7 @@ module.exports = class sqlite {
     });
   }
 
-  find(table, params) {
+  find(table, params = []) {
     let query = `SELECT * from ${table}`;
     const paramValues = [];
 
@@ -97,7 +98,7 @@ module.exports = class sqlite {
         }
 
         if (param.wildcardMatch) {
-          param.value = param.value.replace(param.wildcardCharacter, "%");
+          param.value = replaceAll(param.value, param.wildcardCharacter, "%");
         }
 
         if (typeof param.value === "boolean") {
@@ -128,8 +129,6 @@ module.exports = class sqlite {
 
       query = `${query} WHERE ${queryParams.join(" AND ")}`;
     }
-
-    params.map(param => param.value);
 
     return new Promise((resolve, reject) => {
       this.db.all(query, paramValues, function(err, rows) {

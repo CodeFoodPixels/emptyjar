@@ -1,4 +1,5 @@
 const data = require("../data.js");
+const storage = require("../storage.js");
 
 const urls = [
   "https://lukeb.co.uk/blog/2022/01/17/pixelated-rounded-corners-with-css-clip-path",
@@ -52,6 +53,8 @@ function getRandom(max) {
 }
 
 setTimeout(async () => {
+  await storage.init();
+
   for (let i = 0; i < 100; i++) {
     const hits = getRandom(2000);
     const timestamp = new Date(today - 86400000 * i);

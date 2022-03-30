@@ -32,7 +32,7 @@ module.exports = class sqlite {
     return this.db.collection(collection).insertOne(data);
   }
 
-  find(collection, params) {
+  find(collection, params = []) {
     const query = {};
 
     if (params.length > 0) {
@@ -78,8 +78,14 @@ module.exports = class sqlite {
           return queryParams.push({ [param.key]: param.value });
         }
 
+        if (typeof param.value === "string") {
+          return queryParams.push({
+            [param.key]: new RegExp(escapeRegExp(param.value), "i")
+          });
+        }
+
         queryParams.push({
-          [param.key]: new RegExp(escapeRegExp(param.value), "i")
+          [param.key]: param.value
         });
       });
 

@@ -1,3 +1,5 @@
+const { isPlainObject } = require("is-plain-object");
+
 const defaultConfig = {
   allowedDomains: ["(.+)"],
   storageDriver: "sqlite",
@@ -15,10 +17,7 @@ const config = {
 function loadConfig() {
   try {
     const config = require("../config.json");
-    if (
-      (typeof config === "object" || typeof config === "function") &&
-      config !== null
-    ) {
+    if (isPlainObject(config)) {
       return config;
     }
   } catch (e) {}

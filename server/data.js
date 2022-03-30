@@ -1,9 +1,6 @@
 const storage = require("./storage");
 
-storage.init();
-
 module.exports = {
-  storage,
   logHit(data) {
     const hitData = {
       timestamp: new Date(),
