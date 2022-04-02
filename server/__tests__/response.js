@@ -55,7 +55,7 @@ describe("response", () => {
 
     expect(setHeaderSpy).toBeCalledWith("Content-Type", "text/html");
     expect(res.statusCode).toBe(404);
-    expect(endSpy).toBeCalledWith("Cannot GET file/cheese.jpg");
+    expect(endSpy).toBeCalledWith("Not found");
   });
 
   it("sendFile should return a 500 if there are other errors", async () => {

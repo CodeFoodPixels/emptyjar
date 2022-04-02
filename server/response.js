@@ -21,7 +21,7 @@ class Response extends http.ServerResponse {
         this.statusCode = 404;
         this.setHeader("Content-Type", "text/html");
 
-        return this.end(`Cannot GET ${filePath}`);
+        return this.end("Not found");
       }
 
       this.statusCode = 500;
