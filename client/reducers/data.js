@@ -38,8 +38,7 @@ export default (state, action) => {
     const url = hit.url;
     const referrer = mapURLToName(hit.referrer);
 
-    let country = getCountryName(hit.country);
-    country = country ? country : "Unknown";
+    let country = getCountryName(hit.country) || "Unknown";
 
     if (!data.countries[country]) {
       data.countries[country] = { Uniques: 0 };
