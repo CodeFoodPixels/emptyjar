@@ -50,10 +50,10 @@ export const throttle = (callback, time) => {
 };
 
 export const dateYMD = date => {
-  return `${date.getFullYear()}-${(date.getMonth() + 1)
+  return `${date.getUTCFullYear()}-${(date.getUTCMonth() + 1)
     .toString()
     .padStart(2, "0")}-${date
-    .getDate()
+    .getUTCDate()
     .toString()
     .padStart(2, "0")}`;
 };
