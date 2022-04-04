@@ -203,10 +203,9 @@ const RangePicker = () => {
         </div>
       </div>
       <span>
-        {range.from &&
-          range.to &&
+        {range.bothDatesSelected &&
           `From ${dateYMD(range.from)} to ${dateYMD(range.to)}`}
-        {range.from && !range.to && `Please select the 2nd date`}
+        {!range.bothDatesSelected && `Please select the second date`}
       </span>
       <button onClick={setQueryDates} disabled={!range.from || !range.to}>
         Update
