@@ -58,20 +58,20 @@ body {
 
 .rangepicker__picker {
   display: flex;
-	flex-wrap: wrap-reverse;
+  flex-wrap: wrap-reverse;
 }
 
 .rangepicker__buttons {
-	flex: 1;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-	margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .rangepicker__button {
-	margin-top: 0.25rem;
-	margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
 }
 
 .infobar {
@@ -90,12 +90,12 @@ body {
 
 .footer {
   min-width: 20rem;
-	max-width: 62.5rem;
-	width: 100%;
+  max-width: 62.5rem;
+  width: 100%;
 }
 
 .footer__content {
-	background: var(--background-light);
+  background: var(--background-light);
   padding: 0.5rem;
   margin: 0.25rem;
   border-radius: 0.25rem;
@@ -115,7 +115,8 @@ body {
   font-size: 3rem;
 }
 
-.charts__row, .filters {
+.charts__row,
+.filters {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -123,7 +124,8 @@ body {
   width: 100%;
 }
 
-.charts__chart, .filters__content {
+.charts__chart,
+.filters__content {
   padding: 0.5rem;
   flex: 1;
   background: var(--background-light);
@@ -134,40 +136,41 @@ body {
 }
 
 .filters__filters {
-	display: flex;
-	flex-wrap: wrap;
-	margin: -0.25rem;
-	margin-bottom: 0.5rem
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.25rem;
+  margin-bottom: 0.5rem;
 }
 
-.filters__card{
-	background-color: var(--primary-color);
-	color: #000000;
-	padding: 0.5rem;
-	border-radius: 0.25rem;
-	margin: 0.25rem;
-	border: none;
-	font-weight: normal;
-	font-size: 1rem;
-	cursor: pointer;
+.filters__card {
+  background-color: var(--primary-color);
+  color: #000000;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  margin: 0.25rem;
+  border: none;
+  font-weight: normal;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 .filters__card:hover {
-	background-color: var(--primary-color--hover);
-	color: #000000;
+  background-color: var(--primary-color--hover);
+  color: #000000;
 }
 
-.filters__name, .filters__value {
-	font-weight: bold;
+.filters__name,
+.filters__value {
+  font-weight: bold;
 }
 
 .filters__remove {
-	margin-left: 0.25rem;
+  margin-left: 0.25rem;
 }
 
 .charts__chart-wrapper {
   height: 19rem;
-	display: flex;
+  display: flex;
 }
 
 .charts__title {
@@ -175,21 +178,21 @@ body {
 }
 
 .charts__loader {
-	flex: 1;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .charts__table-wrapper {
-	display: flex;
-	min-height: calc(2rem * var(--charts__table-row-count))
+  display: flex;
+  min-height: calc(2rem * var(--charts__table-row-count));
 }
 
 .charts__table {
   border-spacing: 0rem;
-	min-height: 100%;
-	flex: 1;
+  min-height: 100%;
+  flex: 1;
 }
 
 .charts__table-header--key {
@@ -204,7 +207,7 @@ body {
     var(--primary-color) var(--charts__table-row-bar-width),
     var(--background-light) var(--charts__table-row-bar-width)
   );
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .charts__table-row:hover {
@@ -234,34 +237,56 @@ body {
 }
 
 .rangepicker__daypicker {
-	flex: 4 1 auto;
-	display: flex;
-	justify-content: center;
-	align-content: center;
+  flex: 4 1 auto;
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
-.Selectable
-  .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
-  background-color: var(--primary-color) !important;
+.rangepicker__daypicker .rdp {
+  --rdp-cell-size: 2rem;
+  --rdp-background-color: transparent;
+  --rdp-accent-color: var(--primary-color);
+  --rdp-outline: 2px solid #000000;
+}
+
+.rangepicker__daypicker .rdp-months {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.rangepicker__daypicker .rdp-day_selected:not([disabled]),
+.rangepicker__daypicker .rdp-day_selected:focus:not([disabled]),
+.rangepicker__daypicker .rdp-day_selected:active:not([disabled]),
+.rangepicker__daypicker .rdp-day_selected:hover:not([disabled]) {
+  background-color: var(--primary-color);
   color: #000000;
+  border-radius: 0;
+  border: none;
 }
 
-.Selectable .DayPicker-Day {
-  border-radius: 0 !important;
+.rangepicker__daypicker .rdp-button:hover:not([disabled]) {
+  color: #000000;
+  background-color: var(--primary-color--hover);
 }
 
-.Selectable .DayPicker-Day--start {
-  border-top-left-radius: 50% !important;
-  border-bottom-left-radius: 50% !important;
+.rangepicker__daypicker .rdp-day {
+  border-radius: 0;
 }
 
-.Selectable .DayPicker-Day--end {
-  border-top-right-radius: 50% !important;
-  border-bottom-right-radius: 50% !important;
+.rangepicker__daypicker .rdp-day_disabled,
+.rangepicker__daypicker .rdp-button[disabled] {
+  visibility: hidden;
 }
 
-.Selectable .DayPicker-Day--disabled {
-	visibility: hidden;
+.rangepicker__daypicker .rdp-month,
+.rangepicker__daypicker .rdp-month:last-child,
+.rangepicker__daypicker .rdp-month:first-child {
+  margin: 0.5rem;
+}
+
+.rangepicker__daypicker .rdp-nav_button {
+	border-radius: 0;
 }
 
 button {
@@ -289,13 +314,13 @@ button[disabled]:hover {
 
 .charts__pagination {
   display: flex;
-	height: 2rem;
+  height: 2rem;
 }
 
 .charts__pagination-button {
   flex: 0 0 50%;
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .charts__pagination-button--prev {

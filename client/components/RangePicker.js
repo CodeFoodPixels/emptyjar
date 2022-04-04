@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import DayPicker, { DateUtils } from "react-day-picker";
-import "react-day-picker/lib/style.css";
+import { DayPicker } from "react-day-picker";
+import { subMonths, isBefore } from "date-fns";
+import "react-day-picker/dist/style.css";
 import { dateYMD } from "../helpers";
 import { StateContext } from "../context";
 import { ONE_DAY, UPDATE_QUERYDATES } from "../constants";
@@ -14,78 +15,91 @@ const RangePicker = () => {
   } = useContext(StateContext);
   const today = new Date();
 
-  const [state, setState] = useState({
+  const [range, setRange] = useState({
     from,
     to,
-    selectedBothDates: true
+    bothDatesSelected: true
   });
 
+  const [month, setMonth] = useState(subMonths(range.to, 1));
+
   useEffect(() => {
-    setState({
-      ...state,
-      to,
-      from
+    const rangeTo = new Date();
+    rangeTo.setFullYear(to.getUTCFullYear());
+    rangeTo.setMonth(to.getUTCMonth());
+    rangeTo.setDate(to.getUTCDate());
+    rangeTo.setHours(23, 59, 59, 999);
+
+    const rangeFrom = new Date();
+    rangeFrom.setFullYear(from.getUTCFullYear());
+    rangeFrom.setMonth(from.getUTCMonth());
+    rangeFrom.setDate(from.getUTCDate());
+    rangeFrom.setHours(0, 0, 0, 0);
+
+    setMonth(subMonths(rangeTo, 1));
+    setRange({
+      ...range,
+      to: rangeTo,
+      from: rangeFrom
     });
   }, [to, from]);
 
-  const updateQueryDates = queryDates =>
+  const updateQueryDates = queryDates => {
+    const to = new Date();
+    to.setUTCFullYear(queryDates.to.getFullYear());
+    to.setUTCMonth(queryDates.to.getMonth());
+    to.setUTCDate(queryDates.to.getDate());
+    to.setUTCHours(23, 59, 59, 999);
+
+    const from = new Date();
+    from.setUTCFullYear(queryDates.from.getFullYear());
+    from.setUTCMonth(queryDates.from.getMonth());
+    from.setUTCDate(queryDates.from.getDate());
+    from.setUTCHours(0, 0, 0, 0);
+
     dispatch({
       type: UPDATE_QUERYDATES,
-      queryDates
+      queryDates: {
+        to,
+        from
+      }
     });
-
-  function handleDayClick(day, modifiers = {}) {
-    if (modifiers.disabled) {
-      return;
-    }
-
-    const newState = {};
-
-    if (state.selectedBothDates) {
-      newState.from = new Date(day);
-      newState.selectedBothDates = false;
-    } else if (
-      !state.selectedBothDates &&
-      DateUtils.isSameDay(state.from, day)
-    ) {
-      newState.from = state.from;
-      newState.to = new Date(day);
-      newState.selectedBothDates = true;
-    } else {
-      const dateRange = DateUtils.addDayToRange(day, state);
-      newState.from = dateRange.from;
-      newState.to = dateRange.to;
-      newState.selectedBothDates = true;
-    }
-
-    if (newState.from) {
-      newState.from.setUTCHours(0, 0, 0, 0);
-    }
-
-    if (newState.to) {
-      newState.to.setUTCHours(23, 59, 59, 999);
-    }
-
-    setState(newState);
-  }
+  };
 
   function setQueryDates() {
     updateQueryDates({
-      from: state.from,
-      to: state.to
+      to: range.to,
+      from: range.from
     });
   }
 
   function setNewDates(newDates) {
-    newDates.from.setUTCHours(0, 0, 0, 0);
-    newDates.to.setUTCHours(23, 59, 59, 999);
-
-    setState({
-      ...newDates,
-      selectedBothDates: true
+    setMonth(subMonths(newDates.to, 1));
+    setRange({
+      ...newDates
     });
 
     updateQueryDates(newDates);
+  }
+
+  function handleDayClick(day) {
+    setRange(() => {
+      const newRange = {};
+      if (range.bothDatesSelected) {
+        newRange.to = day;
+        newRange.from = day;
+        newRange.bothDatesSelected = false;
+      } else if (isBefore(range.to, day)) {
+        newRange.to = day;
+        newRange.from = range.from;
+        newRange.bothDatesSelected = true;
+      } else {
+        newRange.to = range.to;
+        newRange.from = day;
+        newRange.bothDatesSelected = true;
+      }
+      return newRange;
+    });
   }
 
   function handleTodayClick() {
@@ -170,27 +184,31 @@ const RangePicker = () => {
         </div>
         <div className="rangepicker__daypicker">
           <DayPicker
-            className="Selectable"
             numberOfMonths={2}
-            selectedDays={[state.from, { from: state.from, to: state.to }]}
-            month={to}
-            toMonth={today}
-            modifiers={{
-              disabled: {
-                after: today
-              }
+            mode="range"
+            defaultMonth={subMonths(today, 1)}
+            selected={range}
+            month={month}
+            onMonthChange={setMonth}
+            onSelect={setRange}
+            hidden={{
+              after: today
             }}
+            disabled={{
+              after: today
+            }}
+            toDate={today}
             onDayClick={handleDayClick}
           />
         </div>
       </div>
       <span>
-        {state.from &&
-          state.to &&
-          `From ${dateYMD(state.from)} to ${dateYMD(state.to)}`}
-        {state.from && !state.to && `Please select the 2nd date`}
+        {range.from &&
+          range.to &&
+          `From ${dateYMD(range.from)} to ${dateYMD(range.to)}`}
+        {range.from && !range.to && `Please select the 2nd date`}
       </span>
-      <button onClick={setQueryDates} disabled={!state.from || !state.to}>
+      <button onClick={setQueryDates} disabled={!range.from || !range.to}>
         Update
       </button>
     </div>
