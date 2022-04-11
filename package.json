@@ -40,10 +40,10 @@
     "is-plain-object": "^5.0.0",
     "mime-types": "^2.1.35",
     "mongodb": "^3.4.1",
-    "react": "^16.9.0",
-    "react-chartjs-2": "^4.0.1",
-    "react-day-picker": "^8.0.1",
-    "react-dom": "^16.9.0",
+    "react": "^18.0.0",
+    "react-chartjs-2": "^4.1.0",
+    "react-day-picker": "^8.0.3",
+    "react-dom": "^18.0.0",
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {

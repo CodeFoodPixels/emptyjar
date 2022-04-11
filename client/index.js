@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./components/App.js";
 import reducers from "./reducers";
 import { StateProvider } from "./context.js";
@@ -21,10 +21,9 @@ const initialState = {
   loading: false,
   data: []
 };
-
-render(
+const root = createRoot(document.getElementById("root"));
+root.render(
   <StateProvider reducer={reducers} initialState={initialState}>
     <App />
-  </StateProvider>,
-  document.getElementById("root")
+  </StateProvider>
 );

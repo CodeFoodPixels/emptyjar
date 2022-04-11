@@ -4,7 +4,7 @@ import Loader from "../Loader";
 const Table = ({
   columnName,
   total,
-  data,
+  data = {},
   title,
   limit = 5,
   showPercentage = false,
@@ -12,7 +12,7 @@ const Table = ({
   linkContents = false,
   loading = false
 }) => {
-  if (!data) {
+  if (!Object.keys(data).length === 0) {
     return null;
   }
 
