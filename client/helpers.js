@@ -1,4 +1,5 @@
 import { overwrite, getName, getCode } from "country-list";
+import { ONE_DAY } from "./constants.js";
 
 overwrite([
   {
@@ -39,4 +40,33 @@ export const dateYMD = date => {
     .getUTCDate()
     .toString()
     .padStart(2, "0")}`;
+};
+
+export const generateInitialState = () => {
+  const urlParams = stateFromUrlParams(window.location.href);
+
+  const fromDate = new Date(Date.now() - ONE_DAY * 6);
+  const from = new Date();
+  from.setUTCFullYear(fromDate.getFullYear());
+  from.setUTCMonth(fromDate.getMonth());
+  from.setUTCDate(fromDate.getDate());
+  from.setUTCHours(0, 0, 0, 0);
+
+  const toDate = new Date();
+  const to = new Date();
+  to.setUTCFullYear(toDate.getFullYear());
+  to.setUTCMonth(toDate.getMonth());
+  to.setUTCDate(toDate.getDate());
+  to.setUTCHours(23, 59, 59, 999);
+
+  return {
+    queryDates: {
+      from,
+      to,
+      ...urlParams.queryDates
+    },
+    filters: { ...urlParams.filters },
+    loading: false,
+    data: []
+  };
 };
