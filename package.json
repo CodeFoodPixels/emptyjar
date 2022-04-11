@@ -14,11 +14,32 @@
   },
   "jest": {
     "collectCoverage": true,
-    "testPathIgnorePatterns": [
-      ".testData.js"
-    ],
-    "coveragePathIgnorePatterns": [
-      ".testData.js"
+    "projects": [
+      {
+        "displayName": "server",
+        "testMatch": [
+          "<rootDir>/server/**/__tests__/*.js"
+        ],
+        "testPathIgnorePatterns": [
+          ".testData.js"
+        ],
+        "coveragePathIgnorePatterns": [
+          ".testData.js"
+        ]
+      },
+      {
+        "displayName": "client",
+        "testEnvironment": "jsdom",
+        "testMatch": [
+          "<rootDir>/client/**/__tests__/*.js"
+        ],
+        "testPathIgnorePatterns": [
+          ".testData.js"
+        ],
+        "coveragePathIgnorePatterns": [
+          ".testData.js"
+        ]
+      }
     ]
   },
   "repository": {
@@ -48,8 +69,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
+    "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/react-hooks": "^8.0.0",
     "@types/jest": "^27.4.1",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.6.0",
