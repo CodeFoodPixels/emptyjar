@@ -28,17 +28,6 @@ async function ping(req, res) {
   } catch (e) {}
 }
 
-async function beacon(req, res) {
-  res.end();
-  try {
-    const data = JSON.parse(req.body);
-
-    data.ip = getIP(req);
-    data.ua = req.headers["user-agent"];
-    await processHit(data);
-  } catch (e) {}
-}
-
 async function processHit(hit) {
   if (hit.url && urlChecker(hit.url)) {
     const hitData = {
@@ -102,6 +91,5 @@ async function processHit(hit) {
 }
 
 module.exports = {
-  ping,
-  beacon
+  ping
 };
