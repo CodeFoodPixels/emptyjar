@@ -7,7 +7,7 @@ import { generateInitialState } from "./helpers.js";
 
 const root = createRoot(document.getElementById("root"));
 root.render(
-  <StateProvider reducer={reducers} initialState={generateInitialState}>
+  <StateProvider reducer={reducers} initialState={generateInitialState()}>
     <App />
   </StateProvider>
 );
