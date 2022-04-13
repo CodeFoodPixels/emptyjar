@@ -19,24 +19,19 @@
         }
       } catch (e) {}
     }
-
-    if (navigator.sendBeacon) {
-      navigator.sendBeacon(analyticsUrl + "/beacon", JSON.stringify(data));
-    } else {
-      const img = document.createElement("img");
-      img.setAttribute("alt", "");
-      img.setAttribute("aria-hidden", "true");
-      img.style.position = "absolute";
-      img.src =
-        analyticsUrl + "/ping?data=" + encodeURIComponent(JSON.stringify(data));
-      img.addEventListener("load", function() {
+    const img = document.createElement("img");
+    img.setAttribute("alt", "");
+    img.setAttribute("aria-hidden", "true");
+    img.style.position = "absolute";
+    img.src =
+      analyticsUrl + "/ping?data=" + encodeURIComponent(JSON.stringify(data));
+    img.addEventListener("load", function() {
+      img.parentNode.removeChild(img);
+    }),
+      img.addEventListener("error", function() {
         img.parentNode.removeChild(img);
       }),
-        img.addEventListener("error", function() {
-          img.parentNode.removeChild(img);
-        }),
-        document.body.appendChild(img);
-    }
+      document.body.appendChild(img);
   }
 
   setTimeout(function() {
