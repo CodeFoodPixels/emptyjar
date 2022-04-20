@@ -1,19 +1,5 @@
 import * as React from "react";
-import { renderHook, act } from "@testing-library/react-hooks";
-
-async function setup(args = {}) {
-  const returnVal = {};
-  function TestComponent() {
-    Object.assign(returnVal, React.useContext(StateContext));
-    return null;
-  }
-  render(
-    <StateProvider {...args}>
-      <TestComponent />
-    </StateProvider>
-  );
-  return returnVal;
-}
+import { renderHook, act } from "@testing-library/react";
 
 describe("context", () => {
   it("Should return the state", async () => {
