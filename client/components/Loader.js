@@ -1,7 +1,7 @@
 import React from "react";
 const Loader = () => {
   return (
-    <div className="charts__loader">
+    <div className="charts__loader" data-testid="charts__loader">
       <svg
         width="90"
         height="30"
