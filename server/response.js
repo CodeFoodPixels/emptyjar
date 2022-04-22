@@ -8,14 +8,19 @@ class Response extends http.ServerResponse {
     super(...arguments);
   }
 
-  async sendFile(filePath) {
+  async sendFile(filePath, transform) {
     const realPath = path.join(__dirname, filePath);
     const extname = path.extname(realPath);
 
     try {
       const content = await fs.readFile(realPath);
       this.setHeader("Content-Type", mime.lookup(extname));
-      this.end(content);
+      if (transform) {
+        const transformedContent = await transform(content);
+        this.end(transformedContent);
+      } else {
+        this.end(content);
+      }
     } catch (error) {
       if (error.code === "ENOENT") {
         this.statusCode = 404;

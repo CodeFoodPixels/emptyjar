@@ -1,6 +1,7 @@
 const path = require("path");
 const { ping } = require("./capture.js");
 const { hits, teapot } = require("./api.js");
+const config = require("../config");
 
 function staticFile(req, res) {
   const dir = req.requestUrl.pathname.match(/^\/build/) ? "build" : "public";
@@ -20,7 +21,28 @@ module.exports = {
     "/test": (req, res) => res.end('<script src="/ping.js"></script>'),
     "/api/hits": hits,
     "/api/teapot": teapot,
-    "/": (req, res) => res.sendFile(path.join("..", "public", "index.html")),
+    "/": (req, res) =>
+      res.sendFile(path.join("..", "public", "index.html"), file => {
+        if (!config.theme) {
+          return file;
+        }
+
+        const cssVars = Object.keys(config.theme)
+          .map(key => {
+            return `--${key}: ${config.theme[key]};`;
+          })
+          .join("\n      ");
+
+        return file.toString().replace(
+          "<!-- custom theme colours -->",
+          `<!-- custom theme colours -->
+  <style>
+    :root{
+      ${cssVars}
+    }
+  </style>`
+        );
+      }),
     "*": staticFile
   }
 };
