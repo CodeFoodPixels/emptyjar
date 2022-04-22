@@ -77,7 +77,7 @@ const App = () => {
         .join("&");
 
       if (window.location.search !== `?${windowQuery}`) {
-        history.pushState({}, "", `?${windowQuery}`);
+        history.replaceState({}, "", `?${windowQuery}`);
       }
       const res = await fetch(`/api/hits?${apiQuery}`);
 
