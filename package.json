@@ -38,6 +38,9 @@
         ],
         "coveragePathIgnorePatterns": [
           ".testData.js"
+        ],
+        "setupFiles": [
+          "jest-canvas-mock"
         ]
       }
     ]
@@ -78,6 +81,7 @@
     "babel-loader": "^8.2.3",
     "css-loader": "^6.6.0",
     "jest": "^27.5.1",
+    "jest-canvas-mock": "^2.3.1",
     "prettier": "^1.19.1",
     "style-loader": "^3.3.1",
     "webpack": "^5.69.1",

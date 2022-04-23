@@ -12,19 +12,19 @@ import Loader from "../Loader";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const stylesheet = getComputedStyle(document.documentElement);
-const body = getComputedStyle(document.querySelector("body"));
-ChartJS.defaults.font.size = parseInt(body.fontSize, 10);
-ChartJS.defaults.color = body.color;
+const stylesheet = window.getComputedStyle(document.documentElement);
+const body = window.getComputedStyle(document.querySelector("body"));
+ChartJS.defaults.font.size = parseInt(body.fontSize || 16, 10);
+ChartJS.defaults.color = body.color || "#000000";
 
 const colors = [
   {
-    base: stylesheet.getPropertyValue("--primary-color"),
-    hover: stylesheet.getPropertyValue("--primary-color--hover")
+    base: stylesheet.getPropertyValue("--primary-color") || "#000000",
+    hover: stylesheet.getPropertyValue("--primary-color--hover") || "#333333"
   },
   {
-    base: stylesheet.getPropertyValue("--secondary-color"),
-    hover: stylesheet.getPropertyValue("--secondary-color--hover")
+    base: stylesheet.getPropertyValue("--secondary-color") || "#666666",
+    hover: stylesheet.getPropertyValue("--secondary-color--hover") || "#999999"
   }
 ];
 
@@ -68,16 +68,18 @@ const BarChart = ({
         label: series.name,
         data: series.values,
         backgroundColor:
-          i > colors.length ? colors[colors.length - 1].base : colors[i].base,
+          i >= colors.length ? colors[colors.length - 1].base : colors[i].base,
         hoverBackgroundColor:
-          i > colors.length ? colors[colors.length - 1].hover : colors[i].hover
+          i >= colors.length ? colors[colors.length - 1].hover : colors[i].hover
       };
     })
   };
 
   return (
     <div className="charts__chart">
-      <h2 className="charts__title">{title}</h2>
+      <h2 className="charts__title" data-testid="charts__title">
+        {title}
+      </h2>
       <div className="charts__chart-wrapper">
         {loading ? (
           <Loader />
@@ -87,6 +89,7 @@ const BarChart = ({
             options={options}
             data={chartData}
             onClick={onClick}
+            data-testid="charts__bar-chart"
           />
         )}
       </div>
