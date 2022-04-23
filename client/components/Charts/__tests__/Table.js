@@ -8,7 +8,6 @@ import {
   within
 } from "@testing-library/react";
 import Table from "../Table";
-import { act } from "react-dom/test-utils";
 
 describe("Table", () => {
   it("should render a table with the given data", () => {
