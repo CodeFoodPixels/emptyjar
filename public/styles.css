@@ -9,7 +9,6 @@
 
 html {
   height: 100%;
-  font-size: 16px;
 }
 
 body,
@@ -247,7 +246,7 @@ body {
   --rdp-cell-size: 2rem;
   --rdp-background-color: transparent;
   --rdp-accent-color: var(--primary-color);
-  --rdp-outline: 2px solid #000000;
+  --rdp-outline: 0.125rem solid #000000;
 }
 
 .rangepicker__daypicker .rdp-months {
