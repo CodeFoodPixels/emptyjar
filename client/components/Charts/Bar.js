@@ -51,6 +51,13 @@ const BarChart = ({
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    scales: {
+      y: {
+        ticks: {
+          precision: 0
+        }
+      }
+    },
     plugins: {
       legend: {
         position: "bottom"
